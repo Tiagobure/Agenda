@@ -1,6 +1,8 @@
 package gui;
 
+import gui.util.Constraints;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import model.KeyWord;
@@ -8,54 +10,51 @@ import model.dao.KeyWordDAO;
 
 public class KeyWordViewController {
 	@FXML
-	private TextField campoPalavra;
+	private TextField txtKeyWord,txtSubject,txtTalkAbout;
 	@FXML
-	private TextArea campoDescricao;
+	private TextArea txtdescription;
 	@FXML
-	private TextField campoMateria;
-	@FXML
-	private TextField campoAssunto;
-
-	private KeyWordDAO palavraChaveDAO = new KeyWordDAO();
+	private Button btSave;
 	
-	private int usuarioId; // ID do usuário logado
 
-	public void setUsuarioId(int usuarioId) {
-		this.usuarioId = usuarioId;
+	private KeyWordDAO keyWordDAO = new KeyWordDAO();
+	
+	private int userId; // ID do usuário logado
+
+	public void setUsuarioId(int userId) {
+		this.userId = userId;
 	}
 
 	@FXML
 	public void initialize() {
-		// Limitar o tamanho do texto
-		campoDescricao.textProperty().addListener((observable, oldValue, newValue) -> {
-			if (newValue.length() > 1000) { // Limite de 5000 caracteres
-				campoDescricao.setText(oldValue);
-			}
-		});
+		Constraints.setTextAreaMaxLength(txtdescription, 1000);
+		Constraints.setTextFieldMaxLength(txtKeyWord, 70);
+		Constraints.setTextFieldMaxLength(txtSubject, 50);
+		Constraints.setTextFieldMaxLength(txtTalkAbout, 50);
 	}
 	@FXML
-	public void salvarPalavraChaveAction() {
-		String palavra = campoPalavra.getText();
-		String descricao = campoDescricao.getText();
-		String materia = campoMateria.getText();
-		String assunto = campoAssunto.getText();
+	public void saveKeyWordAction() {
+		String word = txtKeyWord.getText();
+		String description = txtdescription.getText();
+		String subject = txtSubject.getText();
+		String talkAbout = txtTalkAbout.getText();
 
-		if (palavra.isEmpty() || descricao.isEmpty() || materia.isEmpty() || assunto.isEmpty()) {
+		if (word.isEmpty() || description.isEmpty() || subject.isEmpty() || talkAbout.isEmpty()) {
 			System.out.println("Preencha todos os campos!");
 			return;
 		}
 
-		KeyWord palavraChave = new KeyWord(palavra, descricao, materia, assunto);
-		palavraChaveDAO.inserir(palavraChave, usuarioId);
+		KeyWord keyWord = new KeyWord(word, description, subject, talkAbout);
+		keyWordDAO.inserir(keyWord, userId);
 
 		System.out.println("Palavra-chave salva com sucesso!");
-		limparCampos();
+		ClearFilds();
 	}
 
-	private void limparCampos() {
-		campoPalavra.clear();
-		campoDescricao.clear();
-		campoMateria.clear();
-		campoAssunto.clear();
+	private void ClearFilds() {
+		txtKeyWord.clear();
+		txtdescription.clear();
+		txtSubject.clear();
+		txtTalkAbout.clear();
 	}
 }

@@ -50,7 +50,7 @@ public class Main extends Application {
 		}
 	}
 	
-	public void carregarTela(String fxml, String titulo, Map<String, Object> params) {
+	public void loadView(String fxml, String titulo, Map<String, Object> params) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
 			Parent root = loader.load();

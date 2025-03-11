@@ -1,11 +1,15 @@
 package gui;
 
+import java.util.List;
+
 import application.Main;
 import application.MainAppAware;
 import gui.util.Alerts;
+import gui.util.Constraints;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -14,54 +18,53 @@ import model.dao.SummaryDAO;
 
 public class SummaryViewController {
 	@FXML
-	private TextField campoTitulo;
+	private TextField txtFieldTitle, txtFieldSubject,txtFieldTalkAbout, txtFieldAttachment;
 	@FXML
-	private TextArea campoTexto;
+	private TextArea txtArea;
 	@FXML
-	private TextField campoMateria;
+	private Button btSave, btClear, btFile;
+	
 	@FXML
-	private TextField campoAssunto;
-	@FXML
-	private TextField campoAnexo;
-	@FXML
-	private Button btSave;
-
+	private ListView<Object> listView;
+	
 	private Main mainApp;
 
-	private SummaryDAO resumoDAO = new SummaryDAO();
-	private int usuarioId; // ID do usuário logado
+	private SummaryDAO summaryDAO = new SummaryDAO();
+	private int userId; // ID do usuário logado
 
-	public void setUsuarioId(int usuarioId) {
-		this.usuarioId = usuarioId;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	@FXML
 	public void initialize() {
-		// Limitar o tamanho do texto
-		campoTexto.textProperty().addListener((observable, oldValue, newValue) -> {
-			if (newValue.length() > 5000) { // Limite de 5000 caracteres
-				campoTexto.setText(oldValue);
-			}
-		});
+		
+		Constraints.setTextAreaMaxLength(txtArea, 5000);
+		Constraints.setTextFieldMaxLength(txtFieldTitle, 70);
+		Constraints.setTextFieldMaxLength(txtFieldSubject, 60);
+		Constraints.setTextFieldMaxLength(txtFieldTalkAbout,100 );
+		Constraints.setTextFieldMaxLength(txtFieldAttachment, 200);
+
+		
 	}
 
 	@FXML
 	public void saveSummary() {
 
-		String titulo = campoTitulo.getText();
-		String texto = campoTexto.getText();
-		String materia = campoMateria.getText();
-		String assunto = campoAssunto.getText();
-		String anexo = campoAnexo.getText();
+		String title = txtFieldTitle.getText();
+		String text = txtArea.getText();
+		String subject = txtFieldSubject.getText();
+		String talkAbout = txtFieldTalkAbout.getText();
+		String attachment = txtFieldAttachment.getText();
 
-		if (titulo.isEmpty() || texto.isEmpty() || materia.isEmpty() || assunto.isEmpty()) {
+		if (title.isEmpty() || text.isEmpty() || subject.isEmpty() || talkAbout.isEmpty()) {
 			Alerts.showAlert("Aviso", null, "Campos em branco", AlertType.WARNING);
 			return;
 		}
 
-		Summary resumo = new Summary(titulo, texto, materia, assunto);
-		resumo.setAttachment(anexo);
-		resumoDAO.inserir(resumo, usuarioId);
+		Summary summary = new Summary(title, text, subject, talkAbout);
+		summary.setAttachment(attachment);
+		summaryDAO.inserir(summary, userId);
 
 		// Limpar campos após salvar
 		System.out.println("Resumo salvo com sucesso!");
@@ -71,12 +74,20 @@ public class SummaryViewController {
 	}
 
 	private void clearLabels() {
-		campoTitulo.clear();
-		campoTexto.clear();
-		campoMateria.clear();
-		campoAssunto.clear();
-		campoAnexo.clear();
+		txtFieldTitle.clear();
+		txtArea.clear();
+		txtFieldSubject.clear();
+		txtFieldTalkAbout.clear();
+		txtFieldAttachment.clear();
 	}
 
+	 
+		
+		 public void listSummary() {
+	      List<Summary> list =  summaryDAO.listLastSummary(userId, 5);
+	      listView.getItems().addAll(list);
+
+		 }
+	
 	
 }

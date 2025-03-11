@@ -11,46 +11,43 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" 
+    style="-fx-background-color: #F4F6F9;" 
+    xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
 
     <!-- Top Section -->
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header">
-            <padding>
-                <Insets bottom="20" left="40" right="40" top="20" />
-            </padding>
-
-            <Label styleClass="title-label" text="AGENDA DO ESTUDANTE" />
-
-            <Button onAction="#abrirBusca" styleClass="search-button">
-                <graphic>
-                    <Label styleClass="icon" text="🔍" />
-                </graphic>
-            </Button>
+        <HBox alignment="CENTER_LEFT" spacing="15" 
+            style="-fx-background-color: #1565C0; -fx-padding: 15; -fx-border-width: 0 0 2 0; -fx-border-color: #FFA726;">
+            <Label text="AGENDA DO ESTUDANTE" 
+                style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            <Button onAction="#abrirBusca" text="🔍" 
+                style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-fill: white; -fx-cursor: hand;" />
         </HBox>
     </top>
 
     <!-- Left Navigation -->
     <left>
-        <VBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-panel">
-            <padding>
-                <Insets bottom="40" left="20" right="20" top="40" />
-            </padding>
-
-            <Button onAction="#abrirResumos" styleClass="nav-button" text="Resumos" />
-            <Button onAction="#abrirPalavrasChave" styleClass="nav-button" text="Palavras-Chave" />
-            <Button onAction="#abrirCronograma" styleClass="nav-button" text="Cronograma" />
+        <VBox alignment="CENTER_LEFT" spacing="10" 
+            style="-fx-background-color: #FFA726; -fx-padding: 20 10 20 10; -fx-border-width: 0 2 0 0; -fx-border-color: #1565C0;">
+            <Button onAction="#abrirResumos" text="Resumos" 
+                style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 13px; -fx-pref-width: 150px; -fx-padding: 8px; -fx-border-radius: 4px; -fx-cursor: hand;" />
+            <Button onAction="#abrirPalavrasChave" text="Palavras-Chave" 
+                style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 13px; -fx-pref-width: 150px; -fx-padding: 8px; -fx-border-radius: 4px; -fx-cursor: hand;" />
+            <Button onAction="#abrirCronograma" text="Cronograma" 
+                style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 13px; -fx-pref-width: 150px; -fx-padding: 8px; -fx-border-radius: 4px; -fx-cursor: hand;" />
         </VBox>
     </left>
 
     <!-- Área de Conteúdo Dinâmico -->
     <center>
-        <StackPane fx:id="contentArea" styleClass="content-panel">
+        <StackPane fx:id="contentArea" style="-fx-padding: 20;">
             <!-- Placeholder Inicial -->
-            <VBox alignment="CENTER" spacing="20">
-                <Label style="-fx-font-size: 24px; -fx-text-fill: #666;" text="Selecione uma opção no menu" />
+            <VBox alignment="CENTER" spacing="15">
+                <Label text="Selecione uma opção no menu" 
+                    style="-fx-font-size: 20px; -fx-text-fill: #333;" />
                        
-                <ImageView fitHeight="200" fitWidth="200">
+                <ImageView fitHeight="150" fitWidth="150">
                     <Image url="@../images/empty-state.png" />
                 </ImageView>
             </VBox>
@@ -59,13 +56,10 @@
 
     <!-- Footer -->
     <bottom>
-        <HBox styleClass="footer">
-            <Label prefHeight="18.0" prefWidth="205.0" styleClass="footer-label" text="Desenvolvido por Tiago Palma" />
+        <HBox alignment="CENTER" style="-fx-background-color: #1565C0; -fx-padding: 8;">
+            <Label text="Desenvolvido por Tiago Palma" 
+                style="-fx-font-size: 12px; -fx-text-fill: white;" />
         </HBox>
     </bottom>
-   <stylesheets>
-      <URL value="@../styles/style.css" />
-      <URL value="@util/styles.css" />
-   </stylesheets>
 
 </BorderPane>

@@ -29,7 +29,7 @@ public class SummaryDAO {
     }
 
     public List<Summary> listBySubject(String subject, int userId) {
-        List<Summary> resumos = new ArrayList<>();
+        List<Summary> summary = new ArrayList<>();
         String sql = "SELECT * FROM resumos WHERE materia = ? AND usuario_id = ?";
 
         try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -42,17 +42,17 @@ public class SummaryDAO {
                         rs.getString("assunto"), rs.getInt("usuario_id"));
                 r.setId(rs.getInt("id"));
                 r.setAttachment(rs.getString("anexo"));
-                resumos.add(r);
+                summary.add(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return resumos;
+        return summary;
     }
 
     public List<Summary> searchByWord(String term, int userId) {
-        List<Summary> resumos = new ArrayList<>();
+        List<Summary> summary = new ArrayList<>();
         String sql = "SELECT * FROM resumos WHERE usuario_id = ? AND (titulo LIKE ? OR texto LIKE ? OR materia LIKE ? OR assunto LIKE ?)";
 
         try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -70,13 +70,13 @@ public class SummaryDAO {
                         rs.getString("assunto"), rs.getInt("usuario_id"));
                 r.setId(rs.getInt("id"));
                 r.setAttachment(rs.getString("anexo"));
-                resumos.add(r);
+                summary.add(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return resumos;
+        return summary;
     }
     
     public void deletar(Summary summary) {
@@ -88,5 +88,34 @@ public class SummaryDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    
+    public List<Summary> listLastSummary(int userId, int limite) {
+        List<Summary> resumos = new ArrayList<>();
+        String sql = "SELECT * FROM resumos WHERE usuario_id = ? ORDER BY id DESC LIMIT ?";
+
+        try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, limite);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Summary r = new Summary(
+                    rs.getString("titulo"),
+                    rs.getString("texto"),
+                    rs.getString("materia"),
+                    rs.getString("assunto"),
+                    rs.getInt("usuario_id")
+                );
+                r.setId(rs.getInt("id"));
+                r.setAttachment(rs.getString("anexo"));
+                resumos.add(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resumos;
     }
 }

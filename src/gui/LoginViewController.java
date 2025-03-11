@@ -55,7 +55,7 @@ public class LoginViewController implements MainAppAware{
 
 	private void openMainView() {
 		try {
-			mainApp.carregarTela("/gui/MainView.fxml", "Agenda", null);
+			mainApp.loadView("/gui/MainView.fxml", "Agenda", null);
 		} catch (Exception e) {
 			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela principal!", AlertType.ERROR);
 			e.printStackTrace();
@@ -65,7 +65,7 @@ public class LoginViewController implements MainAppAware{
 	@FXML
 	private void RegistrationUser() {
 		try {
-			mainApp.carregarTela("/gui/RegisterView.fxml", "Cadastro", null);
+			mainApp.loadView("/gui/RegisterView.fxml", "Cadastro", null);
 		} catch (Exception e) {
 			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de cadastro!", AlertType.ERROR);
 			e.printStackTrace();
