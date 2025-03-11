@@ -74,8 +74,8 @@ public class Schedule {
 
 	@Override
 	public String toString() {
-		return "Schedule [dayWeek=" + dayWeek + ", hour=" + hour + ", subject=" + subject + ", talkAbout=" + talkAbout
-				+ "]";
+		return "Dia:" + dayWeek + ", Hora:" + hour + ", Matéria:" + subject + ", Assunto:" + talkAbout
+				;
 	}
 
 	

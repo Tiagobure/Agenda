@@ -21,15 +21,30 @@ public class Main extends Application {
 	private static Scene mainScene;
 	private static Main instance; // Singleton instance
 
-	private Integer userId;
+	private int userId; // ID do usuário logado
 
-    public Integer getUserId() {
-        return userId;
-    }
+	public int getUserId() {
+		return userId;
+	}
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+//	public Integer getUserId() {
+//		if (userId == null) {
+//			throw new IllegalStateException("UserId não está definido.");
+//		}
+//		return userId;
+//	}
+
+	public void setUserId(Integer userId) {
+		if (userId == null) {
+			throw new IllegalArgumentException("UserId não pode ser nulo.");
+		}
+		this.userId = userId;
+	}
+
 	public Main() {
 		instance = this;
 	}
@@ -77,20 +92,20 @@ public class Main extends Application {
 			if (controller instanceof MainAppAware) {
 				((MainAppAware) controller).setMainApp(this);
 			}
-			 
 
 			// Configuração de parâmetros específicos
 			if (controller instanceof ScheduleRegistrationViewController && params != null) {
-				ScheduleRegistrationViewController cronogramaController = (ScheduleRegistrationViewController) controller;
+				ScheduleRegistrationViewController scheduleController = (ScheduleRegistrationViewController) controller;
 
 				if (params.containsKey("cronograma")) {
-					cronogramaController.setSelectedSchedule((Schedule) params.get("cronograma"));
+					scheduleController.setSelectedSchedule((Schedule) params.get("cronograma"));
 				}
 
 				if (params.containsKey("usuarioId")) {
-					cronogramaController.setUserId((int) params.get("usuarioId"));
+					scheduleController.setUserId((int) params.get("usuarioId"));
+					}
 				}
-			}
+			
 
 			// Configuração da nova janela
 			Stage stage = new Stage();
@@ -101,6 +116,9 @@ public class Main extends Application {
 		} catch (IOException e) {
 			Alerts.showAlert("Erro", "Erro ao carregar a tela", "Não foi possível carregar a tela: " + fxml,
 					AlertType.ERROR);
+			e.printStackTrace();
+		} catch (NullPointerException | ClassCastException e) {
+			Alerts.showAlert("Erro", "Erro de parâmetro", "Parâmetros inválidos ao carregar a tela.", AlertType.ERROR);
 			e.printStackTrace();
 		}
 	}

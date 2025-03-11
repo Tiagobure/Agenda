@@ -26,7 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class MainViewController implements Initializable {
+public class MainViewController implements Initializable, MainAppAware {
 
 	private Main mainApp;
 
@@ -43,19 +43,18 @@ public class MainViewController implements Initializable {
 
 	@FXML
 	private void openSumaryAction() {
-		loadViewStack("/gui/SummaryView.fxml");
+		loadViewStack("/gui/SummaryView.fxml", null);
 	}
 
 	@FXML
 	private void openKeyWordAction() {
-		loadViewStack("/gui/KeyWordView.fxml");
+		loadViewStack("/gui/KeyWordView.fxml", null);
 	}
 
 	@FXML
 	private void openScheduleAction() {
-	    Integer userId = mainApp.getUserId(); 
-	    // Supondo que você tenha um método para obter o userId
-		loadViewStack("/gui/ScheduleView.fxml");
+		Integer userId = mainApp.getUserId(); // Certifique-se de que mainApp não é null
+		loadViewStack("/gui/ScheduleView.fxml", userId);
 	}
 
 	@FXML
@@ -63,22 +62,28 @@ public class MainViewController implements Initializable {
 		mainApp.loadView("/gui/SearchView.fxml", "Busca", null);
 	}
 
-	private void loadViewStack(String fxmlPath) {
+	private void loadViewStack(String fxmlPath, Integer userId) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
 			Node view = loader.load();
 			contentArea.getChildren().setAll(view);
-			
-			ScheduleViewController controller = loader.getController();
-			  if (loader.getController() instanceof ScheduleViewController) {
-		            ScheduleViewController controller = loader.getController();
-		            controller.setUserId(userId); // Passa o userId para o controlador
-		        }
-			
 
-		} catch (IOException e){
+			if (loader.getController() instanceof ScheduleViewController) {
+				ScheduleViewController controller = loader.getController();
+				if (userId == null) {
+					throw new IllegalArgumentException("UserId não pode ser nulo.");
+				}
+				controller.setUserId(userId); // Passa o userId para o controlador
+			}
+
+		} catch (IOException e) {
 			Alerts.showAlert("Erro ao carregar a tela", null, "Não foi possível carregar a tela: " + fxmlPath,
 					AlertType.INFORMATION);
 		}
+	}
+
+	@Override
+	public void setMainApp(Main mainApp) {
+		this.mainApp = mainApp;
 	}
 }

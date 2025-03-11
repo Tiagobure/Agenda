@@ -26,7 +26,7 @@ public class ScheduleViewController implements MainAppAware {
 
 	private Main mainApp;
 	private ScheduleDAO scheduleDAO = new ScheduleDAO();
-	private int userId;
+	private Integer userId;
 
 	@FXML
 	private ListView<Schedule> listSchedule;
@@ -58,13 +58,18 @@ public class ScheduleViewController implements MainAppAware {
 
 	// Carrega os cronogramas do usuário
 	public void loadSchedule() {
-	    System.out.println("Carregando cronogramas para o userId: " + userId);
+
+		int userIdexist = obUserId();
+		System.out.println("Carregando cronogramas para o userId: " + userIdexist);
+//		if (userIdexist == null) {
+//			throw new IllegalStateException("UserId não está definido.");
+//		}
 		try {
 			List<Schedule> schedulesFromDAO = scheduleDAO.listAll(userId);
-	        System.out.println("Cronogramas carregados: " + schedulesFromDAO.size());
+			System.out.println("Cronogramas carregados: " + schedulesFromDAO.size());
 			schedules.setAll(schedulesFromDAO);
 		} catch (Exception e) {
-	        System.err.println("Erro ao carregar cronogramas:");
+			System.err.println("Erro ao carregar cronogramas:");
 			Alerts.showAlert("Erro", null, "Falha ao carregar cronogramas.", AlertType.ERROR);
 			e.printStackTrace();
 		}
@@ -73,6 +78,10 @@ public class ScheduleViewController implements MainAppAware {
 	// Ações dos botões
 	@FXML
 	public void openRegistrationAction() {
+		if (userId == null) {
+			Alerts.showAlert("Erro", null, "UserId não está definido.", AlertType.ERROR);
+			return;
+		}
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/RegisterScheduleView.fxml"));
 			Parent root = loader.load();
@@ -130,8 +139,7 @@ public class ScheduleViewController implements MainAppAware {
 	}
 
 	private boolean confirmDeletion() {
-		Optional<ButtonType> result = Alerts.showConfirmation(
-				"Confirmação",
+		Optional<ButtonType> result = Alerts.showConfirmation("Confirmação",
 				"Tem certeza que deseja excluir este cronograma permanentemente?");
 		return result.isPresent() && result.get() == ButtonType.OK;
 	}
@@ -144,22 +152,29 @@ public class ScheduleViewController implements MainAppAware {
 	// Método para adicionar um novo cronograma à lista
 	public void addSchedule(Schedule schedule) {
 
-		schedules.add(schedule); 
+		schedules.add(schedule);
 	}
 
 	// Método para atualizar a lista de cronogramas
 	public void refreshSchedules() {
-		loadSchedule(); 
-		
+		loadSchedule();
+
 	}
 
-	public void setUserId(int userId) {
-	    System.out.println("UserId definido: " + userId);
+	public void setUserId(Integer userId) {
+		if (userId == null) {
+			throw new IllegalArgumentException("UserId não pode ser nulo.");
+		}
 		this.userId = userId;
 		loadSchedule();
 	}
 
 	public void setMainApp(Main mainApp) {
 		this.mainApp = mainApp;
+	}
+
+	private int obUserId() {
+		// Implemente a lógica para obter o ID do usuário logado
+		return userId;
 	}
 }
