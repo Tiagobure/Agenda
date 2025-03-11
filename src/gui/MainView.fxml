@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
+
+    <!-- Top Section -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header">
+            <padding>
+                <Insets bottom="20" left="40" right="40" top="20" />
+            </padding>
+
+            <Label styleClass="title-label" text="AGENDA DO ESTUDANTE" />
+
+            <Button onAction="#abrirBusca" styleClass="search-button">
+                <graphic>
+                    <Label styleClass="icon" text="🔍" />
+                </graphic>
+            </Button>
+        </HBox>
+    </top>
+
+    <!-- Left Navigation -->
+    <left>
+        <VBox alignment="CENTER_LEFT" spacing="15" styleClass="nav-panel">
+            <padding>
+                <Insets bottom="40" left="20" right="20" top="40" />
+            </padding>
+
+            <Button onAction="#abrirResumos" styleClass="nav-button" text="Resumos" />
+            <Button onAction="#abrirPalavrasChave" styleClass="nav-button" text="Palavras-Chave" />
+            <Button onAction="#abrirCronograma" styleClass="nav-button" text="Cronograma" />
+        </VBox>
+    </left>
+
+    <!-- Área de Conteúdo Dinâmico -->
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-panel">
+            <!-- Placeholder Inicial -->
+            <VBox alignment="CENTER" spacing="20">
+                <Label style="-fx-font-size: 24px; -fx-text-fill: #666;" text="Selecione uma opção no menu" />
+                       
+                <ImageView fitHeight="200" fitWidth="200">
+                    <Image url="@../images/empty-state.png" />
+                </ImageView>
+            </VBox>
+        </StackPane>
+    </center>
+
+    <!-- Footer -->
+    <bottom>
+        <HBox styleClass="footer">
+            <Label prefHeight="18.0" prefWidth="205.0" styleClass="footer-label" text="Desenvolvido por Tiago Palma" />
+        </HBox>
+    </bottom>
+   <stylesheets>
+      <URL value="@../styles/style.css" />
+      <URL value="@util/styles.css" />
+   </stylesheets>
+
+</BorderPane>

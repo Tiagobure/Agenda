@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="12" style="-fx-padding: 25; -fx-background-color: #F4F6F9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.RegisterViewController">
+
+    <!-- Título -->
+    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1565C0;" text="Crie sua conta" />
+
+    <!-- Campo Nome -->
+    <VBox alignment="CENTER" spacing="3">
+        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Nome" />
+        <TextField fx:id="txtName" promptText="Digite seu nome" style="-fx-pref-width: 260px; -fx-font-size: 14px; -fx-background-color: #ffffff;                     -fx-border-radius: 6px; -fx-border-color: #bbb;                     -fx-padding: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
+    </VBox>
+
+    <!-- Campo Senha -->
+    <VBox alignment="CENTER" spacing="3">
+        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Senha" />
+        <PasswordField fx:id="passField" promptText="Crie uma senha" style="-fx-pref-width: 260px; -fx-font-size: 14px; -fx-background-color: #ffffff;                     -fx-border-radius: 6px; -fx-border-color: #bbb;                     -fx-padding: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
+    </VBox>
+
+    <!-- Botão de Cadastro -->
+    <Button fx:id="btRegister" onAction="#startRegistration" onMouseEntered="#hoverRegister" onMouseExited="#normalRegister" style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 14px;                -fx-pref-width: 260px; -fx-padding: 10px; -fx-border-radius: 6px;                -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);" text="Cadastrar" />
+</VBox>
