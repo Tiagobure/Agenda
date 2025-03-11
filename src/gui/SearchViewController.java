@@ -48,74 +48,85 @@ public class SearchViewController {
 
 	@FXML
 	public void initialize() {
-		txtTypeSearch.getItems().addAll("Resumos", "Palavras-Chave");
-		txtTypeSearch.getSelectionModel().selectFirst();
+	    txtTypeSearch.getItems().addAll("Resumos", "Palavras-Chave");
+	    txtTypeSearch.getSelectionModel().selectFirst();
 
-		listResult.setCellFactory(param -> new ListCell<Object>() {
-			@Override
-			protected void updateItem(Object item, boolean empty) {
-				super.updateItem(item, empty);
-				if (empty || item == null) {
-					setText(null);
-					setGraphic(null);
-				} else {
-					Label label = new Label();
-					Button btnMore = new Button("Ver Mais");
+	    listResult.setCellFactory(param -> new ListCell<Object>() {
+	        @Override
+	        protected void updateItem(Object item, boolean empty) {
+	            super.updateItem(item, empty);
+	            if (empty || item == null) {
+	                setText(null);
+	                setGraphic(null);
+	            } else {
+	                Label label = new Label();
+	                Button btnMore = new Button("++");
 
-					btnMore.setStyle("-fx-background-color: #ff5252; -fx-text-fill: white; -fx-font-size: 12px;");
-					if (item instanceof Summary) {
-						Summary summary = (Summary) item;
-						String shortSummary = summary.getText().substring(0, Math.min(100, summary.getText().length()))
-								+ "...";
-						label.setText("Título: " + summary.getTitle() + "\n" + "Matéria: " + summary.getSubject() + "\n"
-								+ "Assunto: " + summary.getTalkAbout() + "\n" + "Resumo: " + shortSummary);
+	                // Estilo do botão "Ver Mais" (laranja)
+	                btnMore.setStyle("-fx-background-color: #ff6f00; -fx-text-fill: white; -fx-font-size: 12px; " +
+	                        "-fx-padding: 5px 10px; -fx-border-radius: 5px; " +
+	                        "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);");
 
-						btnMore.setOnAction(event -> showSummary(summary));
+	                // Efeito de hover para o botão "Ver Mais"
+	                btnMore.setOnMouseEntered(e -> btnMore.setStyle(
+	                        "-fx-background-color: #ff8f00; -fx-text-fill: white; -fx-font-size: 12px; " +
+	                        "-fx-padding: 5px 10px; -fx-border-radius: 5px; " +
+	                        "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);"));
+	                btnMore.setOnMouseExited(e -> btnMore.setStyle(
+	                        "-fx-background-color: #ff6f00; -fx-text-fill: white; -fx-font-size: 12px; " +
+	                        "-fx-padding: 5px 10px; -fx-border-radius: 5px; " +
+	                        "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"));
 
-					} else if (item instanceof KeyWord) {
+	                if (item instanceof Summary) {
+	                    Summary summary = (Summary) item;
+	                    String shortSummary = summary.getText().substring(0, Math.min(100, summary.getText().length()))
+	                            + "...";
+	                    label.setText("Título: " + summary.getTitle() + "\n" + "Matéria: " + summary.getSubject() + "\n"
+	                            + "Assunto: " + summary.getTalkAbout() + "\n" + "Resumo: " + shortSummary);
 
-						KeyWord keyWord = (KeyWord) item;
-						String shortDescription = keyWord.getDescription().substring(0,
-								Math.min(100, keyWord.getDescription().length())) + "...";
-						label.setText("Palavra-Chave: " + keyWord.getKeyword() + "\n" + "Matéria: "
-								+ keyWord.getSubject() + "\n" + "Assunto: " + keyWord.getTalkAbout() + "\n"
-								+ "Descrição: " + shortDescription);
-						btnMore.setOnAction(event -> showPopupKeyWord(keyWord));
-					}
+	                    btnMore.setOnAction(event -> showSummary(summary));
 
-					// Criando o botão com um ícone de lixeira
-					Button btnDelete = new Button("🗑");
-					btnDelete.setStyle(
-							"-fx-background-color: #e53935; -fx-text-fill: white; -fx-font-size: 14px; -fx-min-width: 30px; -fx-min-height: 30px; -fx-background-radius: 15px;");
+	                } else if (item instanceof KeyWord) {
+	                    KeyWord keyWord = (KeyWord) item;
+	                    String shortDescription = keyWord.getDescription().substring(0,
+	                            Math.min(100, keyWord.getDescription().length())) + "...";
+	                    label.setText("Palavra-Chave: " + keyWord.getKeyword() + "\n" + "Matéria: "
+	                            + keyWord.getSubject() + "\n" + "Assunto: " + keyWord.getTalkAbout() + "\n"
+	                            + "Descrição: " + shortDescription);
+	                    btnMore.setOnAction(event -> showPopupKeyWord(keyWord));
+	                }
 
-					// Efeito de sombra para destacar o botão
-					DropShadow shadow = new DropShadow();
-					shadow.setRadius(5.0);
-					shadow.setOffsetX(2.0);
-					shadow.setOffsetY(2.0);
-					shadow.setColor(Color.rgb(0, 0, 0, 0.3));
-					btnDelete.setEffect(shadow);
+	                // Botão de excluir (azul)
+	                Button btnDelete = new Button("🗑");
+	                btnDelete.setStyle(
+	                        "-fx-background-color: #1976d2; -fx-text-fill: white; -fx-font-size: 14px; " +
+	                        "-fx-min-width: 30px; -fx-min-height: 30px; -fx-background-radius: 15px; " +
+	                        "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);");
 
-					// Efeito de hover (muda de cor ao passar o mouse)
-					btnDelete.setOnMouseEntered(e -> btnDelete.setStyle(
-							"-fx-background-color: #c62828; -fx-text-fill: white; -fx-font-size: 14px; -fx-min-width: 30px; -fx-min-height: 30px; -fx-background-radius: 15px;"));
-					btnDelete.setOnMouseExited(e -> btnDelete.setStyle(
-							"-fx-background-color: #e53935; -fx-text-fill: white; -fx-font-size: 14px; -fx-min-width: 30px; -fx-min-height: 30px; -fx-background-radius: 15px;"));
+	                // Efeito de hover para o botão de excluir
+	                btnDelete.setOnMouseEntered(e -> btnDelete.setStyle(
+	                        "-fx-background-color: #1565c0; -fx-text-fill: white; -fx-font-size: 14px; " +
+	                        "-fx-min-width: 30px; -fx-min-height: 30px; -fx-background-radius: 15px; " +
+	                        "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);"));
+	                btnDelete.setOnMouseExited(e -> btnDelete.setStyle(
+	                        "-fx-background-color: #1976d2; -fx-text-fill: white; -fx-font-size: 14px; " +
+	                        "-fx-min-width: 30px; -fx-min-height: 30px; -fx-background-radius: 15px; " +
+	                        "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"));
 
-					btnDelete.setOnAction(event -> deleteItem(item));
+	                btnDelete.setOnAction(event -> deleteItem(item));
 
-					// Layout horizontal (Texto + Botão)
-					if ((item instanceof Summary && ((Summary) item).getText().length() > 100)
-							|| (item instanceof KeyWord && ((KeyWord) item).getDescription().length() > 10)) {
-						HBox hbox = new HBox(10, label, btnMore, btnDelete);
-						setGraphic(hbox);
-					} else {
-						HBox hbox = new HBox(10, label, btnDelete);
-						setGraphic(hbox);
-					}
-				}
-			}
-		});
+	                // Layout horizontal (Texto + Botões)
+	                if ((item instanceof Summary && ((Summary) item).getText().length() > 100)
+	                        || (item instanceof KeyWord && ((KeyWord) item).getDescription().length() > 10)) {
+	                    HBox hbox = new HBox(10, label, btnMore, btnDelete);
+	                    setGraphic(hbox);
+	                } else {
+	                    HBox hbox = new HBox(10, label, btnDelete);
+	                    setGraphic(hbox);
+	                }
+	            }
+	        }
+	    });
 	}
 
 	// Método para deletar um item da lista e do banco de dados
@@ -210,60 +221,91 @@ public class SearchViewController {
 	}
 
 	private void showSummary(Summary summary) {
-		Stage popupStage = new Stage();
-		popupStage.setTitle("Resumo Completo");
+	    Stage popupStage = new Stage();
+	    popupStage.setTitle("Resumo Completo");
 
-		VBox vbox = new VBox(10);
-		vbox.setStyle("-fx-padding: 20; -fx-background-color: #ffebee;");
+	    VBox vbox = new VBox(10);
+	    vbox.setStyle("-fx-padding: 20; -fx-background-color: #1a237e;"); // Azul escuro
 
-		Label lblTitle = new Label("Título: " + summary.getTitle());
-		lblTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: #d32f2f; -fx-font-size: 16px;");
+	    Label lblTitle = new Label("Título: " + summary.getTitle());
+	    lblTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-size: 16px;"); // Texto branco
 
-		Label lblSubject = new Label("Matéria: " + summary.getSubject());
-		Label lnlTalkAbout = new Label("Assunto: " + summary.getTalkAbout());
+	    Label lblSubject = new Label("Matéria: " + summary.getSubject());
+	    lblSubject.setStyle("-fx-text-fill: #e0e0e0; -fx-font-size: 14px;"); // Texto cinza claro
 
-		Label lblText = new Label(summary.getText());
-		lblText.setWrapText(true);
+	    Label lblTalkAbout = new Label("Assunto: " + summary.getTalkAbout());
+	    lblTalkAbout.setStyle("-fx-text-fill: #e0e0e0; -fx-font-size: 14px;"); // Texto cinza claro
 
-		Button btnClose = new Button("Fechar");
-		btnClose.setStyle("-fx-background-color: #ff5252; -fx-text-fill: white;");
-		btnClose.setOnAction(event -> popupStage.close());
+	    Label lblText = new Label(summary.getText());
+	    lblText.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 14px;"); // Texto branco
+	    lblText.setWrapText(true);
 
-		vbox.getChildren().addAll(lblTitle, lblSubject, lnlTalkAbout, lblText, btnClose);
+	    Button btnClose = new Button("Fechar");
+	    btnClose.setStyle("-fx-background-color: #ff6f00; -fx-text-fill: white; -fx-font-size: 14px; " +
+	                      "-fx-padding: 5px 10px; -fx-border-radius: 5px; " +
+	                      "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"); // Botão laranja
 
-		Scene scene = new Scene(vbox, 400, 300);
-		popupStage.setScene(scene);
-		popupStage.show();
+	    // Efeito de hover para o botão "Fechar"
+	    btnClose.setOnMouseEntered(e -> btnClose.setStyle(
+	            "-fx-background-color: #ff8f00; -fx-text-fill: white; -fx-font-size: 14px; " +
+	            "-fx-padding: 5px 10px; -fx-border-radius: 5px; " +
+	            "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);"));
+	    btnClose.setOnMouseExited(e -> btnClose.setStyle(
+	            "-fx-background-color: #ff6f00; -fx-text-fill: white; -fx-font-size: 14px; " +
+	            "-fx-padding: 5px 10px; -fx-border-radius: 5px; " +
+	            "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"));
+
+	    btnClose.setOnAction(event -> popupStage.close());
+
+	    vbox.getChildren().addAll(lblTitle, lblSubject, lblTalkAbout, lblText, btnClose);
+
+	    Scene scene = new Scene(vbox, 400, 300);
+	    popupStage.setScene(scene);
+	    popupStage.show();
 	}
 
 	private void showPopupKeyWord(KeyWord key) {
-		Stage popupStage = new Stage();
-		popupStage.setTitle("Detalhes da Palavra-Chave");
+	    Stage popupStage = new Stage();
+	    popupStage.setTitle("Detalhes da Palavra-Chave");
 
-		VBox vbox = new VBox(10);
-		vbox.setStyle("-fx-padding: 20; -fx-background-color: #ffebee;");
+	    VBox vbox = new VBox(10);
+	    vbox.setStyle("-fx-padding: 20; -fx-background-color: #1a237e;"); // Azul escuro
 
-		Label lblKeyWord = new Label("Palavra-Chave: " + key.getKeyword());
-		lblKeyWord.setStyle("-fx-font-weight: bold; -fx-text-fill: #d32f2f; -fx-font-size: 16px;");
+	    Label lblKeyWord = new Label("Palavra-Chave: " + key.getKeyword());
+	    lblKeyWord.setStyle("-fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-size: 16px;"); // Texto branco
 
-		Label lblSubject = new Label("Matéria: " + key.getSubject());
-		lblSubject.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
+	    Label lblSubject = new Label("Matéria: " + key.getSubject());
+	    lblSubject.setStyle("-fx-text-fill: #e0e0e0; -fx-font-size: 14px;"); // Texto cinza claro
 
-		Label lblTalkAbout = new Label("Assunto: " + key.getTalkAbout());
-		lblTalkAbout.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
+	    Label lblTalkAbout = new Label("Assunto: " + key.getTalkAbout());
+	    lblTalkAbout.setStyle("-fx-text-fill: #e0e0e0; -fx-font-size: 14px;"); // Texto cinza claro
 
-		Label lblDescription = new Label(key.getDescription());
-		lblDescription.setWrapText(true);
+	    Label lblDescription = new Label(key.getDescription());
+	    lblDescription.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 14px;"); // Texto branco
+	    lblDescription.setWrapText(true);
 
-		Button btnClose = new Button("Fechar");
-		btnClose.setStyle("-fx-background-color: #ff5252; -fx-text-fill: white;");
-		btnClose.setOnAction(event -> popupStage.close());
+	    Button btnClose = new Button("Fechar");
+	    btnClose.setStyle("-fx-background-color: #ff6f00; -fx-text-fill: white; -fx-font-size: 14px; " +
+	                      "-fx-padding: 5px 10px; -fx-border-radius: 5px; " +
+	                      "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"); // Botão laranja
 
-		vbox.getChildren().addAll(lblKeyWord, lblSubject, lblTalkAbout, lblDescription, btnClose);
+	    // Efeito de hover para o botão "Fechar"
+	    btnClose.setOnMouseEntered(e -> btnClose.setStyle(
+	            "-fx-background-color: #ff8f00; -fx-text-fill: white; -fx-font-size: 14px; " +
+	            "-fx-padding: 5px 10px; -fx-border-radius: 5px; " +
+	            "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);"));
+	    btnClose.setOnMouseExited(e -> btnClose.setStyle(
+	            "-fx-background-color: #ff6f00; -fx-text-fill: white; -fx-font-size: 14px; " +
+	            "-fx-padding: 5px 10px; -fx-border-radius: 5px; " +
+	            "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"));
 
-		Scene scene = new Scene(vbox, 400, 250);
-		popupStage.setScene(scene);
-		popupStage.show();
+	    btnClose.setOnAction(event -> popupStage.close());
+
+	    vbox.getChildren().addAll(lblKeyWord, lblSubject, lblTalkAbout, lblDescription, btnClose);
+
+	    Scene scene = new Scene(vbox, 400, 250);
+	    popupStage.setScene(scene);
+	    popupStage.show();
 	}
 	
 	@FXML
