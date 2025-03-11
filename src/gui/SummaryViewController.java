@@ -1,93 +1,94 @@
 package gui;
 
-import java.util.List;
-
+import java.io.File;
 import application.Main;
-import application.MainAppAware;
 import gui.util.Alerts;
 import gui.util.Constraints;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.stage.Stage;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.Summary;
 import model.dao.SummaryDAO;
 
 public class SummaryViewController {
-	@FXML
-	private TextField txtFieldTitle, txtFieldSubject,txtFieldTalkAbout, txtFieldAttachment;
-	@FXML
-	private TextArea txtArea;
-	@FXML
-	private Button btSave, btClear, btFile;
-	
-	@FXML
-	private ListView<Object> listView;
-	
-	private Main mainApp;
+    @FXML
+    private TextField txtFieldTitle, txtFieldSubject, txtFieldTalkAbout, txtFieldAttachment;
+    @FXML
+    private TextArea txtArea;
+    @FXML
+    private Button btSave, btClear, btFile;
 
-	private SummaryDAO summaryDAO = new SummaryDAO();
-	private int userId; // ID do usuário logado
+    private Main mainApp;
+    private SummaryDAO summaryDAO = new SummaryDAO();
+    private int userId;
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	@FXML
-	public void initialize() {
-		
-		Constraints.setTextAreaMaxLength(txtArea, 5000);
-		Constraints.setTextFieldMaxLength(txtFieldTitle, 70);
-		Constraints.setTextFieldMaxLength(txtFieldSubject, 60);
-		Constraints.setTextFieldMaxLength(txtFieldTalkAbout,100 );
-		Constraints.setTextFieldMaxLength(txtFieldAttachment, 200);
+    @FXML
+    public void initialize() {
+        Constraints.setTextAreaMaxLength(txtArea, 5000);
+        Constraints.setTextFieldMaxLength(txtFieldTitle, 70);
+        Constraints.setTextFieldMaxLength(txtFieldSubject, 60);
+        Constraints.setTextFieldMaxLength(txtFieldTalkAbout, 100);
+        Constraints.setTextFieldMaxLength(txtFieldAttachment, 200);
+    }
 
-		
-	}
+    @FXML
+    public void saveSummaryAction() {
+        String title = txtFieldTitle.getText();
+        String text = txtArea.getText();
+        String subject = txtFieldSubject.getText();
+        String talkAbout = txtFieldTalkAbout.getText();
+        String attachment = txtFieldAttachment.getText();
 
-	@FXML
-	public void saveSummary() {
+        if (title.isEmpty() || text.isEmpty() || subject.isEmpty() || talkAbout.isEmpty()) {
+            Alerts.showAlert("Aviso", null, "Campos em branco", AlertType.WARNING);
+            return;
+        }
 
-		String title = txtFieldTitle.getText();
-		String text = txtArea.getText();
-		String subject = txtFieldSubject.getText();
-		String talkAbout = txtFieldTalkAbout.getText();
-		String attachment = txtFieldAttachment.getText();
+        Summary summary = new Summary(title, text, subject, talkAbout);
+        summary.setAttachment(attachment);
+        summaryDAO.inserir(summary, userId);
 
-		if (title.isEmpty() || text.isEmpty() || subject.isEmpty() || talkAbout.isEmpty()) {
-			Alerts.showAlert("Aviso", null, "Campos em branco", AlertType.WARNING);
-			return;
-		}
+        System.out.println("Resumo salvo com sucesso!");
+        clearLabelsAction();
+        mainApp.closeScene(btSave);
+    }
 
-		Summary summary = new Summary(title, text, subject, talkAbout);
-		summary.setAttachment(attachment);
-		summaryDAO.inserir(summary, userId);
+    @FXML
+    public void clearLabelsAction() {
+        txtFieldTitle.clear();
+        txtArea.clear();
+        txtFieldSubject.clear();
+        txtFieldTalkAbout.clear();
+        txtFieldAttachment.clear();
+    }
 
-		// Limpar campos após salvar
-		System.out.println("Resumo salvo com sucesso!");
-		clearLabels();
-		mainApp.closeScene(btSave);
-		
-	}
+    @FXML
+    private void openFileExplorerAction(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecionar Arquivo");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Arquivos de Imagem", "*.jpg", "*.png", "*.gif");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-	private void clearLabels() {
-		txtFieldTitle.clear();
-		txtArea.clear();
-		txtFieldSubject.clear();
-		txtFieldTalkAbout.clear();
-		txtFieldAttachment.clear();
-	}
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
 
-	 
-		
-		 public void listSummary() {
-	      List<Summary> list =  summaryDAO.listLastSummary(userId, 5);
-	      listView.getItems().addAll(list);
+        if (selectedFile != null) {
+            System.out.println("Arquivo selecionado: " + selectedFile.getAbsolutePath());
+        }
+    }
 
-		 }
-	
-	
+    public void setMainApp(Main mainApp) {
+        this.mainApp = mainApp;
+    }
 }

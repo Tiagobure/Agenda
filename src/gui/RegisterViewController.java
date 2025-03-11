@@ -46,7 +46,9 @@ public class RegisterViewController {
 			userDAO.userRegister(usuario);
 			Alerts.showAlert("Sucesso", null,"Usuário cadastrado com sucesso!", AlertType.INFORMATION);
 			clearLabel();
-			mainApp.closeScene(btRegister);
+			Stage stage = (Stage) btRegister.getScene().getWindow();
+			stage.close();
+			
 		} catch (Exception e) {
 			Alerts.showAlert("Erro", null, "Nome de usuário já cadastrado!", AlertType.ERROR);
 		}

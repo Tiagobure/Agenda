@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -11,31 +9,22 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" 
-    style="-fx-background-color: #F4F6F9;" 
-    xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #F4F6F9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
 
     <!-- Top Section -->
     <top>
-        <HBox alignment="CENTER_LEFT" spacing="15" 
-            style="-fx-background-color: #1565C0; -fx-padding: 15; -fx-border-width: 0 0 2 0; -fx-border-color: #FFA726;">
-            <Label text="AGENDA DO ESTUDANTE" 
-                style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" />
-            <Button onAction="#abrirBusca" text="🔍" 
-                style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-fill: white; -fx-cursor: hand;" />
+        <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: #1565C0; -fx-padding: 15; -fx-border-width: 0 0 2 0; -fx-border-color: #FFA726;">
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" text="AGENDA DO ESTUDANTE" />
+            <Button fx:id="btSearch" onAction="#openSearchAction" style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-text-fill: white; -fx-cursor: hand;" text="🔍" />
         </HBox>
     </top>
 
     <!-- Left Navigation -->
     <left>
-        <VBox alignment="CENTER_LEFT" spacing="10" 
-            style="-fx-background-color: #FFA726; -fx-padding: 20 10 20 10; -fx-border-width: 0 2 0 0; -fx-border-color: #1565C0;">
-            <Button onAction="#abrirResumos" text="Resumos" 
-                style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 13px; -fx-pref-width: 150px; -fx-padding: 8px; -fx-border-radius: 4px; -fx-cursor: hand;" />
-            <Button onAction="#abrirPalavrasChave" text="Palavras-Chave" 
-                style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 13px; -fx-pref-width: 150px; -fx-padding: 8px; -fx-border-radius: 4px; -fx-cursor: hand;" />
-            <Button onAction="#abrirCronograma" text="Cronograma" 
-                style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 13px; -fx-pref-width: 150px; -fx-padding: 8px; -fx-border-radius: 4px; -fx-cursor: hand;" />
+        <VBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color: #FFA726; -fx-padding: 20 10 20 10; -fx-border-width: 0 2 0 0; -fx-border-color: #1565C0;">
+            <Button fx:id="btSummary" onAction="#openSumaryAction" style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 13px; -fx-pref-width: 150px; -fx-padding: 8px; -fx-border-radius: 4px; -fx-cursor: hand;" text="Resumos" />
+            <Button fx:id="btKeyWord" onAction="#openKeyWordAction" style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 13px; -fx-pref-width: 150px; -fx-padding: 8px; -fx-border-radius: 4px; -fx-cursor: hand;" text="Palavras-Chave" />
+            <Button fx:id="btSchedule" onAction="#openScheduleAction" style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 13px; -fx-pref-width: 150px; -fx-padding: 8px; -fx-border-radius: 4px; -fx-cursor: hand;" text="Cronograma" />
         </VBox>
     </left>
 
@@ -44,8 +33,7 @@
         <StackPane fx:id="contentArea" style="-fx-padding: 20;">
             <!-- Placeholder Inicial -->
             <VBox alignment="CENTER" spacing="15">
-                <Label text="Selecione uma opção no menu" 
-                    style="-fx-font-size: 20px; -fx-text-fill: #333;" />
+                <Label style="-fx-font-size: 20px; -fx-text-fill: #333;" text="Selecione uma opção no menu" />
                        
                 <ImageView fitHeight="150" fitWidth="150">
                     <Image url="@../images/empty-state.png" />
@@ -57,8 +45,7 @@
     <!-- Footer -->
     <bottom>
         <HBox alignment="CENTER" style="-fx-background-color: #1565C0; -fx-padding: 8;">
-            <Label text="Desenvolvido por Tiago Palma" 
-                style="-fx-font-size: 12px; -fx-text-fill: white;" />
+            <Label style="-fx-font-size: 12px; -fx-text-fill: white;" text="Desenvolvido por Tiago Palma" />
         </HBox>
     </bottom>
 

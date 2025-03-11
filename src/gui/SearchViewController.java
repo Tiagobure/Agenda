@@ -24,32 +24,32 @@ import model.dao.SummaryDAO;
 public class SearchViewController {
 
 	@FXML
-	private TextField campoBusca;
+	private TextField txtSearch;
 	@FXML
-	private ComboBox<String> comboTipoBusca;
+	private ComboBox<String> txtTypeSearch;
 	@FXML
-	private ListView<Object> listaResultados; // Suporta Resumo e PalavraChave
+	private ListView<Object> listResult; // Suporta Resumo e PalavraChave
 	@FXML
-	private Label mensagemFeedback;
+	private Label msgFeedback;
 
-	private SummaryDAO resumoDAO = new SummaryDAO();
-	private KeyWordDAO palavraChaveDAO = new KeyWordDAO();
+	private SummaryDAO summaryDAO = new SummaryDAO();
+	private KeyWordDAO keyWordDAO = new KeyWordDAO();
 
-	private int usuarioId; // ID do usuário logado
+	private int userId; // ID do usuário logado
 
-	private Stack<String> historicoPesquisas = new Stack<>(); // Pilha para armazenar buscas passadas
-	private Stack<String> pesquisasFuturas = new Stack<>(); // Pilha para armazenar pesquisas que podem ser avançadas
+	private Stack<String> searchHistory = new Stack<>(); // Pilha para armazenar buscas passadas
+	private Stack<String> futureResearch = new Stack<>(); // Pilha para armazenar pesquisas que podem ser avançadas
 
-	public void setUsuarioId(int usuarioId) {
-		this.usuarioId = usuarioId;
+	public void setUsuarioId(int userId) {
+		this.userId = userId;
 	}
 
 	@FXML
 	public void initialize() {
-		comboTipoBusca.getItems().addAll("Resumos", "Palavras-Chave");
-		comboTipoBusca.getSelectionModel().selectFirst();
+		txtTypeSearch.getItems().addAll("Resumos", "Palavras-Chave");
+		txtTypeSearch.getSelectionModel().selectFirst();
 
-		listaResultados.setCellFactory(param -> new ListCell<Object>() {
+		listResult.setCellFactory(param -> new ListCell<Object>() {
 			@Override
 			protected void updateItem(Object item, boolean empty) {
 				super.updateItem(item, empty);
@@ -78,7 +78,7 @@ public class SearchViewController {
 						label.setText("Palavra-Chave: " + palavraChave.getKeyword() + "\n" + "Matéria: "
 								+ palavraChave.getSubject() + "\n" + "Assunto: " + palavraChave.getTalkAbout() + "\n"
 								+ "Descrição: " + descricaoCurta);
-						btnVerMais.setOnAction(event -> mostrarPopupPalavraChave(palavraChave));
+						btnVerMais.setOnAction(event -> showPopupKeyWord(palavraChave));
 					}
 
 					// Criando o botão com um ícone de lixeira
@@ -119,35 +119,35 @@ public class SearchViewController {
 	// Método para deletar um item da lista e do banco de dados
 	private void deleteItem(Object item) {
 		if (item instanceof Summary) {
-			resumoDAO.deletar((Summary) item);
+			summaryDAO.deletar((Summary) item);
 		} else if (item instanceof KeyWord) {
-			palavraChaveDAO.delete((KeyWord) item);
+			keyWordDAO.delete((KeyWord) item);
 		}
-		listaResultados.getItems().remove(item);
-		mensagemFeedback.setText("Item deletado com sucesso!");
+		listResult.getItems().remove(item);
+		msgFeedback.setText("Item deletado com sucesso!");
 	}
 
 	@FXML
 	private void search() {
-		String termo = campoBusca.getText().trim();
-		String tipoBusca = comboTipoBusca.getValue();
-		listaResultados.getItems().clear();
+		String termo = txtSearch.getText().trim();
+		String tipoBusca = txtTypeSearch.getValue();
+		listResult.getItems().clear();
 
 		if (termo.isEmpty()) {
-			mensagemFeedback.setText("Digite um termo para buscar!");
+			msgFeedback.setText("Digite um termo para buscar!");
 			return;
 		}
 
 		// Adiciona a pesquisa atual ao histórico e limpa a pilha de pesquisas futuras
-		if (!historicoPesquisas.isEmpty()) {
-			String ultimaBusca = historicoPesquisas.peek();
-			if (!ultimaBusca.equals(termo)) { // Evita salvar buscas duplicadas seguidas
-				historicoPesquisas.push(termo);
-				pesquisasFuturas.clear(); // Se fizer uma nova busca, limpa os "avanços"
+		if (!searchHistory.isEmpty()) {
+			String lastSearch = searchHistory.peek();
+			if (!lastSearch.equals(termo)) { // Evita salvar buscas duplicadas seguidas
+				searchHistory.push(termo);
+				futureResearch.clear(); // Se fizer uma nova busca, limpa os "avanços"
 			}
 		} else {
-			historicoPesquisas.push(termo);
-			pesquisasFuturas.clear();
+			searchHistory.push(termo);
+			futureResearch.clear();
 		}
 
 		if (tipoBusca.equals("Resumos")) {
@@ -158,48 +158,48 @@ public class SearchViewController {
 	}
 
 	private void searchSummary(String termo) {
-		List<Summary> resultados = resumoDAO.searchByWord(termo, usuarioId);
+		List<Summary> result = summaryDAO.searchByWord(termo, userId);
 
-		if (resultados.isEmpty()) {
-			mensagemFeedback.setText("Nenhum resumo encontrado para: " + termo);
+		if (result.isEmpty()) {
+			msgFeedback.setText("Nenhum resumo encontrado para: " + termo);
 		} else {
-			listaResultados.getItems().addAll(resultados);
-			mensagemFeedback.setText(resultados.size() + " resumo(s) encontrado(s)");
+			listResult.getItems().addAll(result);
+			msgFeedback.setText(result.size() + " resumo(s) encontrado(s)");
 		}
 	}
 
 	private void searchKeyWord(String termo) {
-		List<KeyWord> resultados = palavraChaveDAO.searchByTerm(termo, usuarioId);
+		List<KeyWord> result = keyWordDAO.searchByTerm(termo, userId);
 
-		if (resultados.isEmpty()) {
-			mensagemFeedback.setText("Nenhuma palavra-chave encontrada para: " + termo);
+		if (result.isEmpty()) {
+			msgFeedback.setText("Nenhuma palavra-chave encontrada para: " + termo);
 		} else {
-			listaResultados.getItems().addAll(resultados);
-			mensagemFeedback.setText(resultados.size() + " palavra(s)-chave encontrada(s)");
+			listResult.getItems().addAll(result);
+			msgFeedback.setText(result.size() + " palavra(s)-chave encontrada(s)");
 		}
 	}
 
 	@FXML
 	private void back() {
-		if (historicoPesquisas.size() > 1) {
-			pesquisasFuturas.push(historicoPesquisas.pop()); // Salva a busca atual na pilha de futuros
-			String ultimaBusca = historicoPesquisas.peek(); // Obtém a busca anterior
-			campoBusca.setText(ultimaBusca); // Atualiza o campo de busca
+		if (searchHistory.size() > 1) {
+			futureResearch.push(searchHistory.pop()); // Salva a busca atual na pilha de futuros
+			String lastSearch = searchHistory.peek(); // Obtém a busca anterior
+			txtSearch.setText(lastSearch); // Atualiza o campo de busca
 			search(); // Refaz a busca
 		} else {
-			mensagemFeedback.setText("Não há pesquisas anteriores!");
+			msgFeedback.setText("Não há pesquisas anteriores!");
 		}
 	}
 
 	@FXML
 	private void advance() {
-		if (!pesquisasFuturas.isEmpty()) {
-			String proximaBusca = pesquisasFuturas.pop(); // Recupera a busca futura
-			historicoPesquisas.push(proximaBusca); // Adiciona de volta ao histórico
-			campoBusca.setText(proximaBusca); // Atualiza o campo de busca
+		if (!futureResearch.isEmpty()) {
+			String advanceBusca = futureResearch.pop(); // Recupera a busca futura
+			searchHistory.push(advanceBusca); // Adiciona de volta ao histórico
+			txtSearch.setText(advanceBusca); // Atualiza o campo de busca
 			search(); // Refaz a busca
 		} else {
-			mensagemFeedback.setText("Não há pesquisas futuras para avançar!");
+			msgFeedback.setText("Não há pesquisas futuras para avançar!");
 		}
 	}
 
@@ -230,23 +230,23 @@ public class SearchViewController {
 		popupStage.show();
 	}
 
-	private void mostrarPopupPalavraChave(KeyWord palavraChave) {
+	private void showPopupKeyWord(KeyWord key) {
 		Stage popupStage = new Stage();
 		popupStage.setTitle("Detalhes da Palavra-Chave");
 
 		VBox vbox = new VBox(10);
 		vbox.setStyle("-fx-padding: 20; -fx-background-color: #ffebee;");
 
-		Label lblKeyWord = new Label("Palavra-Chave: " + palavraChave.getKeyword());
+		Label lblKeyWord = new Label("Palavra-Chave: " + key.getKeyword());
 		lblKeyWord.setStyle("-fx-font-weight: bold; -fx-text-fill: #d32f2f; -fx-font-size: 16px;");
 
-		Label lblSubject = new Label("Matéria: " + palavraChave.getSubject());
+		Label lblSubject = new Label("Matéria: " + key.getSubject());
 		lblSubject.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
 
-		Label lblTalkAbout = new Label("Assunto: " + palavraChave.getTalkAbout());
+		Label lblTalkAbout = new Label("Assunto: " + key.getTalkAbout());
 		lblTalkAbout.setStyle("-fx-font-size: 14px; -fx-text-fill: #555;");
 
-		Label lblDescription = new Label(palavraChave.getDescription());
+		Label lblDescription = new Label(key.getDescription());
 		lblDescription.setWrapText(true);
 
 		Button btnClose = new Button("Fechar");
