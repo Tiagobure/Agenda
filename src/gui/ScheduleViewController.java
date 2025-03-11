@@ -35,31 +35,33 @@ public class ScheduleViewController implements MainAppAware {
 
 	private ScheduleDAO scheduleDAO = new ScheduleDAO();
 
-	private int usuarioId;
+	private int userId;
 
-	public void setUsuarioId(int usuarioId) {
-		this.usuarioId = usuarioId;
+	public void setUsuarioId(int userId) {
+		this.userId = userId;
 	}
 
 	public void setMainApp(Main mainApp) {
 		this.mainApp = mainApp;
-		loadSchedule(); // Carrega cronogramas ao iniciar
+		loadSchedule(); 
 	}
 
 	@FXML
 	public void initialize() {
-		listSchedule.setItems(schedules); // Vincula a lista ao ListView
+		listSchedule.setItems(schedules); 
+		// Vincula a lista ao ListView
 
 		// Adiciona ações para os botões
 		btNewSchedule.setOnAction(event -> openRegistration());
-		btEdit.setOnAction(event -> editarCronograma());
+		btEdit.setOnAction(event -> editeSchedule());
 		btDelete.setOnAction(event -> deleteSchedule());
 	}
 
-	// Carrega os cronogramas
+	
 	private void loadSchedule() {
-		int usuarioId = obterUsuarioId(); // Obtém o ID do usuário logado
-		listScheduleObject = scheduleDAO.listAll(usuarioId);
+		//int userId = obtainUserId(); 
+		// Obtém o ID do usuário logado
+		listScheduleObject = scheduleDAO.listAll(userId);
 
 		// Limpa a lista atual e adiciona os novos cronogramas
 		schedules.clear();
@@ -68,35 +70,28 @@ public class ScheduleViewController implements MainAppAware {
 		}
 	}
 
-	// Obtém o ID do usuário logado
-	private int obterUsuarioId() {
-		// Implemente a lógica para obter o ID do usuário logado
-		return usuarioId;
-	}
-
 	// Abre a janela de cadastro de um novo cronograma
 	@FXML
 	private void openRegistration() {
 		try {
-			mainApp.carregarTela("/gui/CronogramaView.fxml", "Novo Cronograma", null);
+			mainApp.loadView("/gui/CronogramaView.fxml", "Novo Cronograma", null);
 		} catch (Exception e) {
 			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela principal!", AlertType.ERROR);
 			e.printStackTrace();
 		}
 	}
 
-	// Edita o cronograma selecionado
 	@FXML
-	private void editarCronograma() {
+	private void editeSchedule() {
 		if (checkSelection()) {
-			int indiceSelecionado = listSchedule.getSelectionModel().getSelectedIndex();
-			Schedule cronogramaSelecionado = listScheduleObject.get(indiceSelecionado);
+			int selectedIndex = listSchedule.getSelectionModel().getSelectedIndex();
+			Schedule selectSchedule = listScheduleObject.get(selectedIndex);
 
 			Map<String, Object> params = new HashMap<>();
-			params.put("cronograma", cronogramaSelecionado);
-			params.put("usuarioId", usuarioId);
+			params.put("cronograma", selectSchedule);
+			params.put("usuarioId", userId);
 			try {
-				mainApp.carregarTela("/gui/CronogramaView.fxml", "Editar Cronograma", params);
+				mainApp.loadView("/gui/CronogramaView.fxml", "Editar Cronograma", params);
 			} catch (Exception e) {
 				Alerts.showAlert("Erro", null, "não foi possivel abrir ", AlertType.ERROR);
 				e.printStackTrace();
@@ -105,23 +100,21 @@ public class ScheduleViewController implements MainAppAware {
 
 	}
 
-	// Deleta o cronograma selecionado
 	@FXML
 	private void deleteSchedule() {
 		if (checkSelection()) {
-			int indiceSelecionado = listSchedule.getSelectionModel().getSelectedIndex();
-			Schedule cronogramaSelecionado = listScheduleObject.get(indiceSelecionado);
+			int selectedIndex = listSchedule.getSelectionModel().getSelectedIndex();
+			Schedule selectSchedule = listScheduleObject.get(selectedIndex);
 
 			// Remove do banco de dados
-			scheduleDAO.delete(cronogramaSelecionado.getId(), obterUsuarioId());
+			scheduleDAO.delete(selectSchedule.getId(), userId);
 
 			// Remove da lista de objetos e da lista de strings
-			listScheduleObject.remove(indiceSelecionado);
-			schedules.remove(indiceSelecionado);
+			listScheduleObject.remove(selectedIndex);
+			schedules.remove(selectedIndex);
 		}
 	}
 
-	// Verifica se um cronograma foi selecionado
 	private boolean checkSelection() {
 		if (listSchedule.getSelectionModel().getSelectedItem() == null) {
 			Alerts.showAlert("Selecione um cronograma", null, "Por favor, selecione um cronograma.",
