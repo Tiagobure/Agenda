@@ -31,6 +31,8 @@ public class SearchViewController {
 	private ListView<Object> listResult; // Suporta Resumo e PalavraChave
 	@FXML
 	private Label msgFeedback;
+	@FXML
+	private Button btBack, btAvance, btSearch, btSearchAll;
 
 	private SummaryDAO summaryDAO = new SummaryDAO();
 	private KeyWordDAO keyWordDAO = new KeyWordDAO();
@@ -58,27 +60,27 @@ public class SearchViewController {
 					setGraphic(null);
 				} else {
 					Label label = new Label();
-					Button btnVerMais = new Button("Ver Mais");
+					Button btnMore = new Button("Ver Mais");
 
-					btnVerMais.setStyle("-fx-background-color: #ff5252; -fx-text-fill: white; -fx-font-size: 12px;");
+					btnMore.setStyle("-fx-background-color: #ff5252; -fx-text-fill: white; -fx-font-size: 12px;");
 					if (item instanceof Summary) {
 						Summary summary = (Summary) item;
-						String resumoCurto = summary.getText().substring(0, Math.min(100, summary.getText().length()))
+						String shortSummary = summary.getText().substring(0, Math.min(100, summary.getText().length()))
 								+ "...";
 						label.setText("Título: " + summary.getTitle() + "\n" + "Matéria: " + summary.getSubject() + "\n"
-								+ "Assunto: " + summary.getTalkAbout() + "\n" + "Resumo: " + resumoCurto);
+								+ "Assunto: " + summary.getTalkAbout() + "\n" + "Resumo: " + shortSummary);
 
-						btnVerMais.setOnAction(event -> showSummary(summary));
+						btnMore.setOnAction(event -> showSummary(summary));
 
 					} else if (item instanceof KeyWord) {
 
-						KeyWord palavraChave = (KeyWord) item;
-						String descricaoCurta = palavraChave.getDescription().substring(0,
-								Math.min(100, palavraChave.getDescription().length())) + "...";
-						label.setText("Palavra-Chave: " + palavraChave.getKeyword() + "\n" + "Matéria: "
-								+ palavraChave.getSubject() + "\n" + "Assunto: " + palavraChave.getTalkAbout() + "\n"
-								+ "Descrição: " + descricaoCurta);
-						btnVerMais.setOnAction(event -> showPopupKeyWord(palavraChave));
+						KeyWord keyWord = (KeyWord) item;
+						String shortDescription = keyWord.getDescription().substring(0,
+								Math.min(100, keyWord.getDescription().length())) + "...";
+						label.setText("Palavra-Chave: " + keyWord.getKeyword() + "\n" + "Matéria: "
+								+ keyWord.getSubject() + "\n" + "Assunto: " + keyWord.getTalkAbout() + "\n"
+								+ "Descrição: " + shortDescription);
+						btnMore.setOnAction(event -> showPopupKeyWord(keyWord));
 					}
 
 					// Criando o botão com um ícone de lixeira
@@ -105,7 +107,7 @@ public class SearchViewController {
 					// Layout horizontal (Texto + Botão)
 					if ((item instanceof Summary && ((Summary) item).getText().length() > 100)
 							|| (item instanceof KeyWord && ((KeyWord) item).getDescription().length() > 10)) {
-						HBox hbox = new HBox(10, label, btnVerMais, btnDelete);
+						HBox hbox = new HBox(10, label, btnMore, btnDelete);
 						setGraphic(hbox);
 					} else {
 						HBox hbox = new HBox(10, label, btnDelete);
@@ -119,7 +121,7 @@ public class SearchViewController {
 	// Método para deletar um item da lista e do banco de dados
 	private void deleteItem(Object item) {
 		if (item instanceof Summary) {
-			summaryDAO.deletar((Summary) item);
+			summaryDAO.delete((Summary) item);
 		} else if (item instanceof KeyWord) {
 			keyWordDAO.delete((KeyWord) item);
 		}
@@ -128,12 +130,12 @@ public class SearchViewController {
 	}
 
 	@FXML
-	private void search() {
-		String termo = txtSearch.getText().trim();
-		String tipoBusca = txtTypeSearch.getValue();
+	public void search() {
+		String term = txtSearch.getText().trim();
+		String typeSearch = txtTypeSearch.getValue();
 		listResult.getItems().clear();
 
-		if (termo.isEmpty()) {
+		if (term.isEmpty()) {
 			msgFeedback.setText("Digite um termo para buscar!");
 			return;
 		}
@@ -141,19 +143,21 @@ public class SearchViewController {
 		// Adiciona a pesquisa atual ao histórico e limpa a pilha de pesquisas futuras
 		if (!searchHistory.isEmpty()) {
 			String lastSearch = searchHistory.peek();
-			if (!lastSearch.equals(termo)) { // Evita salvar buscas duplicadas seguidas
-				searchHistory.push(termo);
-				futureResearch.clear(); // Se fizer uma nova busca, limpa os "avanços"
+			if (!lastSearch.equals(term)) { 
+				searchHistory.push(term);
+				// Se fizer uma nova busca, limpa os "avanços"
+
+				futureResearch.clear();
 			}
 		} else {
-			searchHistory.push(termo);
+			searchHistory.push(term);
 			futureResearch.clear();
 		}
 
-		if (tipoBusca.equals("Resumos")) {
-			searchSummary(termo);
-		} else if (tipoBusca.equals("Palavras-Chave")) {
-			searchKeyWord(termo);
+		if (typeSearch.equals("Resumos")) {
+			searchSummary(term);
+		} else if (typeSearch.equals("Palavras-Chave")) {
+			searchKeyWord(term);
 		}
 	}
 
@@ -163,8 +167,9 @@ public class SearchViewController {
 		if (result.isEmpty()) {
 			msgFeedback.setText("Nenhum resumo encontrado para: " + termo);
 		} else {
+	        listResult.getItems().clear(); 
 			listResult.getItems().addAll(result);
-			msgFeedback.setText(result.size() + " resumo(s) encontrado(s)");
+			msgFeedback.setText(result.size() + " resumo(s) encontrado(s)" + termo);
 		}
 	}
 
@@ -174,13 +179,14 @@ public class SearchViewController {
 		if (result.isEmpty()) {
 			msgFeedback.setText("Nenhuma palavra-chave encontrada para: " + termo);
 		} else {
+	        listResult.getItems().clear(); // 
 			listResult.getItems().addAll(result);
-			msgFeedback.setText(result.size() + " palavra(s)-chave encontrada(s)");
+			msgFeedback.setText(result.size() + " palavra(s)-chave encontrada(s)" + termo);
 		}
 	}
 
 	@FXML
-	private void back() {
+	public void back() {
 		if (searchHistory.size() > 1) {
 			futureResearch.push(searchHistory.pop()); // Salva a busca atual na pilha de futuros
 			String lastSearch = searchHistory.peek(); // Obtém a busca anterior
@@ -192,7 +198,7 @@ public class SearchViewController {
 	}
 
 	@FXML
-	private void advance() {
+	public void advance() {
 		if (!futureResearch.isEmpty()) {
 			String advanceBusca = futureResearch.pop(); // Recupera a busca futura
 			searchHistory.push(advanceBusca); // Adiciona de volta ao histórico
@@ -258,6 +264,29 @@ public class SearchViewController {
 		Scene scene = new Scene(vbox, 400, 250);
 		popupStage.setScene(scene);
 		popupStage.show();
+	}
+	
+	@FXML
+	public void listAll() {
+	    // Limpa a lista atual
+	    listResult.getItems().clear();
+
+	    List<Summary> summaries = summaryDAO.findAllByUserId(userId);
+	    if (!summaries.isEmpty()) {
+	        listResult.getItems().addAll(summaries);
+	    }
+
+	    List<KeyWord> keyWords = keyWordDAO.findAllByUserId(userId);
+	    if (!keyWords.isEmpty()) {
+	        listResult.getItems().addAll(keyWords);
+	    }
+
+	    // Exibe feedback ao usuário
+	    if (listResult.getItems().isEmpty()) {
+	        msgFeedback.setText("Nenhum resumo ou palavra-chave encontrado.");
+	    } else {
+	        msgFeedback.setText("Listando todos os resumos e palavras-chave.");
+	    }
 	}
 
 }

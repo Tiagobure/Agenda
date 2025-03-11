@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.DataBase;
+import db.DbException;
 import model.Summary;
 
 public class SummaryDAO {
@@ -79,7 +80,7 @@ public class SummaryDAO {
         return summary;
     }
     
-    public void deletar(Summary summary) {
+    public void delete(Summary summary) {
         String sql = "DELETE FROM resumos WHERE id = ?";
         try (Connection conn = DataBase.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -92,7 +93,7 @@ public class SummaryDAO {
     
     
     public List<Summary> listLastSummary(int userId, int limite) {
-        List<Summary> resumos = new ArrayList<>();
+        List<Summary> summarys = new ArrayList<>();
         String sql = "SELECT * FROM resumos WHERE usuario_id = ? ORDER BY id DESC LIMIT ?";
 
         try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -110,12 +111,37 @@ public class SummaryDAO {
                 );
                 r.setId(rs.getInt("id"));
                 r.setAttachment(rs.getString("anexo"));
-                resumos.add(r);
+                summarys.add(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return resumos;
+        return summarys;
+    }
+    
+    public List<Summary> findAllByUserId(int userId) {
+        String sql = "SELECT * FROM resumos WHERE usuario_id = ?";
+        try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql))  {
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            List<Summary> summaries = new ArrayList<>();
+            while (rs.next())  {
+                Summary sum = new Summary(
+                        rs.getString("titulo"),
+                        rs.getString("texto"),
+                        rs.getString("materia"),
+                        rs.getString("assunto"),
+                        rs.getInt("usuario_id")
+                    );
+                sum.setId(rs.getInt("id"));
+                sum.setAttachment(rs.getString("anexo"));
+                    summaries.add(sum);
+                }
+            return summaries;
+        } catch (SQLException e) {
+            throw new DbException("Erro ao buscar resumos do usuário: " + e.getMessage());
+        }
     }
 }

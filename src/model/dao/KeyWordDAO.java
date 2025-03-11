@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import db.DataBase;
+import db.DbException;
 import model.KeyWord;
 
 public class KeyWordDAO {
@@ -89,4 +90,26 @@ public class KeyWordDAO {
 		}
 	}
 
+	public List<KeyWord> findAllByUserId(int userId) {
+	    String sql = "SELECT * FROM palavras_chave WHERE usuario_id = ?";
+	    try (Connection conn = DataBase.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, userId);
+	        ResultSet rs = stmt.executeQuery();
+
+	        List<KeyWord> keyWords = new ArrayList<>();
+	        while (rs.next()) {
+	            KeyWord key = new KeyWord(rs.getString("palavra"), 
+	            		rs.getString("descricao"),
+	            		rs.getString("materia"),
+	            		rs.getString("assunto"),
+	            		rs.getInt("usuario_id"));
+                key.setId(rs.getInt("id"));
+
+	            keyWords.add(key);
+	        }
+	        return keyWords;
+	    } catch (SQLException e) {
+	        throw new DbException("Erro ao buscar palavras-chave do usuário: " + e.getMessage());
+	    }
+	}
 }
