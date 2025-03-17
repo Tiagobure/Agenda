@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="721.0" prefWidth="608.0" spacing="25" style="-fx-padding: 20; -fx-background-color: #F4F6F9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SummaryViewController">
+<VBox alignment="CENTER" prefHeight="721.0" prefWidth="608.0" spacing="25" style="-fx-padding: 20; -fx-background-color: #F4F6F9; -fx-border-radius: 10px;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SummaryViewController">
 
-    <!-- Header da Seção -->
-    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1565C0;" text="GERENCIAMENTO DE RESUMOS" />
+    <!-- Cabeçalho -->
+    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1E88E5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);" text="GERENCIAMENTO DE RESUMOS" />
 
     <!-- Formulário -->
-    <GridPane hgap="15" style="-fx-background-color: white; -fx-padding: 20; -fx-border-color: #ddd; -fx-border-radius: 6px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);" vgap="20">
+    <GridPane hgap="15" vgap="15" style="-fx-background-color: white; -fx-padding: 20; -fx-border-color: #ddd; -fx-border-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 4, 0, 0, 1);">
         <columnConstraints>
             <ColumnConstraints percentWidth="30" />
             <ColumnConstraints percentWidth="70" />
@@ -24,41 +24,33 @@
         
         <!-- Campo Título -->
         <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Título:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="txtFieldTitle" promptText="Ex: Revisão de OO" style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 4px; -fx-padding: 8px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="txtFieldTitle" promptText="Ex: Revisão de OO" style="-fx-font-size: 13px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 6px; -fx-padding: 8px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
         
         <!-- Campo Resumo -->
-        <Label style="-fx-font-size: 14px; -fx-text-fill: #333; -fx-alignment: TOP_LEFT;" text="Conteúdo:" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-        <TextArea fx:id="txtArea" prefHeight="240.0" prefWidth="358.0" promptText="Digite seu resumo aqui..." style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 4px; -fx-padding: 8px;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Conteúdo:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextArea fx:id="txtArea" prefHeight="240.0" promptText="Digite seu resumo aqui..." wrapText="true" style="-fx-font-size: 13px; -fx-background-color: #fffefa; -fx-border-color: #ccc; -fx-border-radius: 6px; -fx-padding: 8px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         
         <!-- Campo Matéria -->
-        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Matéria:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <TextField fx:id="txtFieldSubject" promptText="Ex: Programação Avançada" style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 4px; -fx-padding: 8px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Matéria:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="txtFieldSubject" promptText="Ex: Programação Avançada" style="-fx-font-size: 13px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 6px; -fx-padding: 8px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
         <!-- Campo Assunto -->
-        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Assunto:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <TextField fx:id="txtFieldTalkAbout" promptText="Ex: Padrões de Projeto" style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 4px; -fx-padding: 8px;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Assunto:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField fx:id="txtFieldTalkAbout" promptText="Ex: Padrões de Projeto" style="-fx-font-size: 13px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 6px; -fx-padding: 8px;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
         <!-- Campo Anexo -->
-        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Anexo:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
-            <TextField fx:id="txtFieldAttachment" promptText="Caminho do arquivo" style="-fx-font-size: 14px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 4px; -fx-padding: 8px;" HBox.hgrow="ALWAYS" />
-            <Button fx:id="btFile" onAction="#openFileExplorerAction" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 4px; -fx-padding: 8px; -fx-cursor: hand;" text="..." />
+        <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Anexo:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="txtFieldAttachment" promptText="Caminho do arquivo" style="-fx-font-size: 13px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 6px; -fx-padding: 8px;" HBox.hgrow="ALWAYS" />
+            <Button fx:id="btFile" onAction="#openFileExplorerAction" style="-fx-background-color: #FFC107; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 6px; -fx-padding: 8px; -fx-cursor: hand;" text="..." />
         </HBox>
-        
-        <rowConstraints>
-            <RowConstraints minHeight="30" />
-            <RowConstraints minHeight="60" />
-            <RowConstraints minHeight="30" />
-            <RowConstraints minHeight="30" />
-            <RowConstraints minHeight="30" />
-            <RowConstraints minHeight="30" />
-        </rowConstraints>
     </GridPane>
 
     <!-- Ações -->
     <HBox spacing="15">
-        <Button fx:id="btSave" onAction="#saveSummaryAction" style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-radius: 4px; -fx-cursor: hand;" text="Salvar Resumo" />
-        <Button fx:id="btClear" onAction="#clearLabelsAction" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-radius: 4px; -fx-cursor: hand;" text="Limpar Campos" />
+        <Button fx:id="btSave" onAction="#saveSummaryAction" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-radius: 8px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);" text="💾 Salvar" />
+        <Button fx:id="btClear" onAction="#clearLabelsAction" style="-fx-background-color: #FFC107; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px 20px; -fx-border-radius: 8px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);" text="🧹 Limpar" />
     </HBox>
-              
+
 </VBox>
+
