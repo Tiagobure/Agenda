@@ -94,8 +94,8 @@ public final class SummaryViewController implements MainAppAware {
     private void openFileExplorerAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Selecionar Arquivo");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Arquivos de Imagem", "*.jpg", "*.png", "*.gif");
-        fileChooser.getExtensionFilters().add(extFilter);
+        FileChooser.ExtensionFilter textFilter = new FileChooser.ExtensionFilter("Arquivos de Texto", "*.txt", "*.pdf");
+        fileChooser.getExtensionFilters().addAll(textFilter);
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
