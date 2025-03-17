@@ -1,6 +1,5 @@
 package gui;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import db.DbException;

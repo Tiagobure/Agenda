@@ -10,35 +10,46 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="471.0" prefWidth="400.0" spacing="15" style="-fx-padding: 20; -fx-background-color: #F4F6F9; -fx-border-radius: 10px;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.KeyWordViewController">
+<VBox alignment="CENTER" prefHeight="471.0" prefWidth="400.0" spacing="15" style="-fx-padding: 20; -fx-background-color: #F0F0F0; -fx-border-radius: 10px;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.KeyWordViewController">
     
     <!-- Cabeçalho -->
-    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1E88E5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);" text="PALAVRAS-CHAVE" />
+    <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #6CB4EE; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);" text="PALAVRAS-CHAVE" />
     
     <!-- Formulário -->
-    <GridPane hgap="10" vgap="10" style="-fx-background-color: white; -fx-padding: 15; -fx-border-color: #ddd; -fx-border-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);">
+    <GridPane hgap="10" vgap="10" style="-fx-background-color: white; -fx-padding: 15; -fx-border-color: #DDD; -fx-border-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);">
         <columnConstraints>
             <ColumnConstraints percentWidth="35" />
             <ColumnConstraints percentWidth="65" />
         </columnConstraints>
         
+        <!-- Campo Termo -->
         <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Termo:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="txtKeyWord" promptText="Ex: Herança" style="-fx-font-size: 13px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 6px; -fx-padding: 6px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="txtKeyWord" promptText="Ex: Herança" 
+                   style="-fx-font-size: 13px; -fx-background-color: #F7F7F7; -fx-border-color: #CCC; -fx-border-radius: 6px; -fx-padding: 6px;" 
+                   GridPane.columnIndex="1" GridPane.rowIndex="0" />
         
+        <!-- Campo Matéria -->
         <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Matéria:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <TextField fx:id="txtSubject" promptText="Ex: POO" style="-fx-font-size: 13px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 6px; -fx-padding: 6px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="txtSubject" promptText="Ex: POO" 
+                   style="-fx-font-size: 13px; -fx-background-color: #F7F7F7; -fx-border-color: #CCC; -fx-border-radius: 6px; -fx-padding: 6px;" 
+                   GridPane.columnIndex="1" GridPane.rowIndex="1" />
         
+        <!-- Campo Assunto -->
         <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Assunto:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <TextField fx:id="txtTalkAbout" promptText="Ex: Conceitos" style="-fx-font-size: 13px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 6px; -fx-padding: 6px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        
+        <TextField fx:id="txtTalkAbout" promptText="Ex: Conceitos" 
+                   style="-fx-font-size: 13px; -fx-background-color: #F7F7F7; -fx-border-color: #CCC; -fx-border-radius: 6px; -fx-padding: 6px;" 
+                   GridPane.columnIndex="1" GridPane.rowIndex="2" />
     </GridPane>
 
     <!-- Campo de Descrição -->
-    <TextArea fx:id="txtdescription" promptText="Descrição detalhada..." wrapText="true" prefHeight="120.0" style="-fx-font-size: 13px; -fx-background-color: #fffefa; -fx-border-color: #ccc; -fx-border-radius: 6px; -fx-padding: 8px;" />
+    <TextArea fx:id="txtdescription" promptText="Descrição detalhada..." wrapText="true" prefHeight="120.0" 
+              style="-fx-font-size: 13px; -fx-background-color: #FFFFFF; -fx-border-color: #CCC; -fx-border-radius: 6px; -fx-padding: 8px;" />
     
     <!-- Botão de Ação -->
     <HBox alignment="CENTER" spacing="15">
-        <Button fx:id="btSave" onAction="#saveKeyWordAction" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #1E88E5; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 8px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);" text="💾 Salvar" />
+        <Button fx:id="btSave" onAction="#saveKeyWordAction" prefHeight="40.0" prefWidth="100.0" 
+                style="-fx-background-color: #6CB4EE; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 8px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);" 
+                text="💾 Salvar" />
     </HBox>
 
 </VBox>

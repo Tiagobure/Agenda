@@ -7,7 +7,6 @@ import application.Main;
 import application.MainAppAware;
 import gui.util.Alerts;
 import gui.util.Notifier;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

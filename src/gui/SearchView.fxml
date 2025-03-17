@@ -8,27 +8,38 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="15" style="-fx-padding: 20; -fx-background-color: #f0f4f8;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SearchViewController">
+<VBox spacing="15" style="-fx-padding: 20; -fx-background-color: #F0F0F0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SearchViewController">
 
-	<!-- Barra de navegação e busca -->
-	<HBox spacing="15">
-		<Button fx:id="btBack" onAction="#back" style="-fx-background-color: #ff6f00; -fx-text-fill: white;  -fx-font-size: 16px; -fx-pref-width: 150px; -fx-padding: 10px;                                                          -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);" text="Voltar" />
-		<Button fx:id="btSearchAll" onAction="#listAll" style="-fx-background-color: #1976d2; -fx-text-fill: white;  -fx-font-size: 16px; -fx-pref-width: 150px; -fx-padding: 10px;  -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);" text="Listar Tudo" />
-		<Button fx:id="btAvance" onAction="#advance" style="-fx-background-color: #ff6f00; -fx-text-fill: white;  -fx-font-size: 16px; -fx-pref-width: 150px; -fx-padding: 10px;                                                            -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);" text="Avançar" />
+    <!-- Barra de navegação e busca -->
+    <HBox spacing="15">
+        <Button fx:id="btBack" onAction="#back" 
+                style="-fx-background-color: #FFB6C1; -fx-text-fill: white; -fx-font-size: 16px; -fx-pref-width: 150px; -fx-padding: 10px; -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);" 
+                text="Voltar" />
+        <Button fx:id="btSearchAll" onAction="#listAll" 
+                style="-fx-background-color: #6CB4EE; -fx-text-fill: white; -fx-font-size: 16px; -fx-pref-width: 150px; -fx-padding: 10px; -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);" 
+                text="Listar Tudo" />
+        <Button fx:id="btAvance" onAction="#advance" 
+                style="-fx-background-color: #FFB6C1; -fx-text-fill: white; -fx-font-size: 16px; -fx-pref-width: 150px; -fx-padding: 10px; -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);" 
+                text="Avançar" />
 
-		<!-- ComboBox para escolher o tipo de busca -->
-		<ComboBox fx:id="txtTypeSearch" promptText="Selecione o tipo" style="-fx-pref-width: 150px; -fx-text-fill: #1976d2;                           -fx-font-size: 14px; -fx-background-color: #ffffff;                           -fx-border-radius: 5px; -fx-border-color: #ddd;                           -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
+        <!-- ComboBox para escolher o tipo de busca -->
+        <ComboBox fx:id="txtTypeSearch" promptText="Selecione o tipo" 
+                  style="-fx-pref-width: 150px; -fx-text-fill: #6CB4EE; -fx-font-size: 14px; -fx-background-color: #FFFFFF; -fx-border-radius: 5px; -fx-border-color: #DDD; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
 
-		<!-- Campo de busca -->
-		<TextField fx:id="txtSearch" promptText="Digite um termo, matéria ou assunto..." style="-fx-pref-width: 400px; -fx-text-fill: #1976d2;                            -fx-font-size: 14px; -fx-background-color: #ffffff;                            -fx-border-radius: 5px; -fx-border-color: #ddd;                            -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
+        <!-- Campo de busca -->
+        <TextField fx:id="txtSearch" promptText="Digite um termo, matéria ou assunto..." 
+                   style="-fx-pref-width: 400px; -fx-text-fill: #6CB4EE; -fx-font-size: 14px; -fx-background-color: #FFFFFF; -fx-border-radius: 5px; -fx-border-color: #DDD; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
 
-		<Button fx:id="btSearch" onAction="#search" style="-fx-background-color: #1976d2; -fx-text-fill: white;                                                          -fx-font-size: 16px; -fx-pref-width: 150px; -fx-padding: 10px;                                                          -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);" text="Buscar" />
-	</HBox>
+        <Button fx:id="btSearch" onAction="#search" 
+                style="-fx-background-color: #6CB4EE; -fx-text-fill: white; -fx-font-size: 16px; -fx-pref-width: 150px; -fx-padding: 10px; -fx-border-radius: 5px; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);" 
+                text="Buscar" />
+    </HBox>
 
-	<!-- Área de resultados -->
-	<Label style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #1976d2;" text="Resultados:" />
-	<ListView fx:id="listResult" style="-fx-pref-height: 500px; -fx-background-color: #ffffff;                                              -fx-border-radius: 5px; -fx-border-color: #ddd;                                              -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
+    <!-- Área de resultados -->
+    <Label style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #6CB4EE;" text="Resultados:" />
+    <ListView fx:id="listResult" 
+              style="-fx-pref-height: 500px; -fx-background-color: #FFFFFF; -fx-border-radius: 5px; -fx-border-color: #DDD; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
 
-	<!-- Mensagem de feedback -->
-	<Label fx:id="msgFeedback" style="-fx-text-fill: #1976d2; -fx-font-size: 14px;" />
+    <!-- Mensagem de feedback -->
+    <Label fx:id="msgFeedback" style="-fx-text-fill: #6CB4EE; -fx-font-size: 14px;" />
 </VBox>

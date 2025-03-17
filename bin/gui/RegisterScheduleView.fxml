@@ -5,35 +5,35 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20" style="-fx-padding: 30; -fx-background-color: #F4F6F9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ScheduleRegistrationViewController">
+<VBox alignment="CENTER" spacing="20" style="-fx-padding: 30; -fx-background-color: #F0F0F0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ScheduleRegistrationViewController">
 
     <!-- Título -->
-    <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1565C0;" text="CRONOGRAMA DE ESTUDOS" />
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #6CB4EE; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);" text="CRONOGRAMA DE ESTUDOS" />
 
     <!-- Campos de Entrada -->
     <TextField fx:id="txtDayWeek" promptText="Dia da Semana" 
                style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-padding: 10px;
-                      -fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 6px;
-                      -fx-focus-color: #1565C0; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
+                      -fx-background-color: white; -fx-border-color: #DDD; -fx-border-radius: 6px;
+                      -fx-focus-color: #6CB4EE; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
 
     <TextField fx:id="txtHour" promptText="Horário (HH:mm)" 
                style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-padding: 10px;
-                      -fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 6px;
-                      -fx-focus-color: #1565C0; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
+                      -fx-background-color: white; -fx-border-color: #DDD; -fx-border-radius: 6px;
+                      -fx-focus-color: #6CB4EE; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
 
     <TextField fx:id="txtSubject" promptText="Matéria" 
                style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-padding: 10px;
-                      -fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 6px;
-                      -fx-focus-color: #1565C0; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
+                      -fx-background-color: white; -fx-border-color: #DDD; -fx-border-radius: 6px;
+                      -fx-focus-color: #6CB4EE; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
 
     <TextField fx:id="txtTalkAbout" promptText="Assunto" 
                style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-padding: 10px;
-                      -fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 6px;
-                      -fx-focus-color: #1565C0; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
+                      -fx-background-color: white; -fx-border-color: #DDD; -fx-border-radius: 6px;
+                      -fx-focus-color: #6CB4EE; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" />
 
     <!-- Botão Salvar -->
     <Button fx:id="btSave" onAction="#saveBlock" 
-            style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 16px; 
+            style="-fx-background-color: #6CB4EE; -fx-text-fill: white; -fx-font-size: 16px; 
                    -fx-pref-width: 300px; -fx-padding: 12px; -fx-border-radius: 6px;
                    -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);" 
             text="Salvar Bloco" />
