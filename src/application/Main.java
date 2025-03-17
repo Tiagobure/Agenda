@@ -1,11 +1,14 @@
 package application;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import db.DataBase;
 import gui.ScheduleRegistrationViewController;
 import gui.LoginViewController;
 import gui.util.Alerts;
+import gui.util.Notifier;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Modality;
@@ -125,6 +128,8 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		DataBase.init();
+		
 		launch(args);
+		
 	}
 }

@@ -4,14 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import db.DataBase;
+import gui.util.Notifier;
 import model.Schedule;
 
 public class ScheduleDAO {
 
+	
 	public void insert(Schedule schedule) {
 		String sql = "INSERT INTO cronograma (diaSemana, horario, materia, assunto, usuario_id) VALUES (?, ?, ?, ?, ?)";
 
@@ -22,6 +25,7 @@ public class ScheduleDAO {
 			pstmt.setString(4, schedule.getTalkAbout());
 			pstmt.setInt(5, schedule.getUserId()); 
 			pstmt.executeUpdate();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -39,6 +43,9 @@ public class ScheduleDAO {
 				Schedule c = new Schedule(rs.getString("diaSemana"), rs.getString("horario"),
 						rs.getString("materia"), rs.getString("assunto"), rs.getInt("usuario_id"));
 				c.setId(rs.getInt("id"));
+				  LocalDateTime dateTime = Notifier.convertToDateTime(c.getDayWeek(), c.getHour());
+		          c.setDateTime(dateTime);
+				
 				schedule.add(c);
 			}
 		} catch (SQLException e) {

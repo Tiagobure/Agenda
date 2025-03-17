@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDateTime;
+
 public class Schedule {
 	private int id;
 	private String dayWeek;
@@ -7,16 +9,18 @@ public class Schedule {
 	private String subject;
 	private String talkAbout;
 	private int userId;
+    private LocalDateTime dateTime; // Novo campo para data e hora combinadas
 
 
 	
 	public Schedule(String dayWeek, String hour, String subject, String talkAbout, int userId) {
-		super();
+		
 		this.dayWeek = dayWeek;
 		this.hour = hour;
 		this.subject = subject;
 		this.talkAbout = talkAbout;
 		this.userId = userId;
+		 this.dateTime = LocalDateTime.now();
 	}
 
 	public Schedule(String dayWeek, String hour, String subject, String talkAbout) {
@@ -72,11 +76,13 @@ public class Schedule {
 		this.userId = userId;
 	}
 
-	@Override
-	public String toString() {
-		return  ("DIA: " + dayWeek + ", HORA: " + hour + ", MATÉRIA: " + subject + ", ASSUNTO: " + talkAbout).toUpperCase(); 
-				
-	}
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
 
 	
 	

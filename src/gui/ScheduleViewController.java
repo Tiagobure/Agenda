@@ -6,6 +6,8 @@ import java.util.Optional;
 import application.Main;
 import application.MainAppAware;
 import gui.util.Alerts;
+import gui.util.Notifier;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -51,6 +53,7 @@ public final class ScheduleViewController implements MainAppAware {
 	@FXML
 	public void initialize() {
 		configureListView();
+        
 	}
 
 	@FXML
@@ -71,7 +74,7 @@ public final class ScheduleViewController implements MainAppAware {
 	                Label hourLabel = new Label("Hora: " + item.getHour());
 	                Label subjectLabel = new Label("Matéria: " + item.getSubject());
 	                Label topicLabel = new Label("Tópico: " + item.getTalkAbout());
-                     // cores diferentes das label do cronograma
+
 	                dayLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #1565C0;"); // Azul
 	                hourLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #D32F2F;"); // Vermelho
 	                subjectLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #388E3C;"); // Verde
@@ -87,6 +90,7 @@ public final class ScheduleViewController implements MainAppAware {
 	}
 
 	public void loadSchedule() {
+
 		if (mainApp == null) {
 			System.err.println("Erro: mainApp não foi inicializado!");
 			return;
@@ -104,7 +108,11 @@ public final class ScheduleViewController implements MainAppAware {
 		try {
 			List<Schedule> schedulesFromDAO = scheduleDAO.listAll(userId);
 			System.out.println("Cronogramas carregados: " + schedulesFromDAO.size());
+			 
+			Notifier.startNotifier(schedulesFromDAO);
 			schedules.setAll(schedulesFromDAO);
+	       
+
 		} catch (Exception e) {
 			System.err.println("Erro ao carregar cronogramas:");
 			Alerts.showAlert("Erro", null, "Falha ao carregar cronogramas.", AlertType.ERROR);

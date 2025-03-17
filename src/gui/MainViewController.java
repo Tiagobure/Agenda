@@ -2,12 +2,14 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
 import application.MainAppAware;
 import gui.util.Alerts;
+import gui.util.Notifier;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,11 +19,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import model.Schedule;
 
 public class MainViewController implements Initializable, MainAppAware {
 
 	private Main mainApp;
-	
 	@SuppressWarnings("exports")
 	@Override
 	public void setMainApp(Main mainApp) {
