@@ -68,6 +68,7 @@ public class MainViewController implements Initializable, MainAppAware {
 			Node view = loader.load();
 			contentArea.getChildren().setAll(view);
 
+			
 		      if (loader.getController() instanceof MainAppAware) {
 		            ((MainAppAware) loader.getController()).setMainApp(mainApp);
 		        }

@@ -42,6 +42,10 @@ public class RegisterViewController {
 		User usuario = new User(name, password);
 
 		try {
+			if (userDAO.userExists(name)) {
+			    Alerts.showAlert("Erro", null, "Nome de usuário já cadastrado!", AlertType.ERROR);
+			    return;
+			}
 			userDAO.userRegister(usuario);
 			Alerts.showAlert("Sucesso", null,"Usuário cadastrado com sucesso!", AlertType.INFORMATION);
 			

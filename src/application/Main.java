@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Schedule;
+import model.User;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
@@ -22,9 +23,9 @@ import javafx.scene.layout.VBox;
 public class Main extends Application {
 
 	private static Scene mainScene;
-	private static Main instance; // Singleton instance
+	private static Main instance;
 
-	private int userId; // ID do usuário logado
+	private int userId;
 
 	public int getUserId() {
 		return userId;
@@ -34,16 +35,22 @@ public class Main extends Application {
 		this.userId = userId;
 	}
 
+	private User loggedUser;
 
-	public void setUserId(Integer userId) {
-		if (userId == null) {
-			throw new IllegalArgumentException("UserId não pode ser nulo.");
-		}
-		this.userId = userId;
+	public void setLoggedUser(User user) {
+		this.loggedUser = user;
+	}
+
+	public User getLoggedUser() {
+		return loggedUser;
 	}
 
 	public Main() {
-		instance = this;
+		if (instance == null) {
+			instance = this;
+		} else {
+			throw new IllegalStateException("Main já foi inicializado!");
+		}
 	}
 
 	public static Main getInstance() {
@@ -70,19 +77,17 @@ public class Main extends Application {
 		}
 	}
 
-
 	public void loadView(String fxml, String titulo, Map<String, Object> params) {
 		try {
+
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
 			Parent root = loader.load();
 			Object controller = loader.getController();
 
-			// Injeção da aplicação principal
 			if (controller instanceof MainAppAware) {
 				((MainAppAware) controller).setMainApp(this);
 			}
 
-			// Configuração de parâmetros específicos
 			if (controller instanceof ScheduleRegistrationViewController && params != null) {
 				ScheduleRegistrationViewController scheduleController = (ScheduleRegistrationViewController) controller;
 
@@ -99,8 +104,12 @@ public class Main extends Application {
 
 			stage.setTitle(titulo);
 			stage.sizeToScene();
-			stage.initModality(Modality.APPLICATION_MODAL); 
-			stage.initOwner(mainScene.getWindow());
+			stage.initModality(Modality.APPLICATION_MODAL);
+
+			if (mainScene != null && mainScene.getWindow() != null) {
+				stage.initOwner(mainScene.getWindow());
+			}
+
 			stage.showAndWait();
 		} catch (IOException e) {
 			Alerts.showAlert("Erro", "Erro ao carregar a tela", "Não foi possível carregar a tela: " + fxml,

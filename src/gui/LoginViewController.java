@@ -8,6 +8,8 @@ import gui.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import model.User;
+import model.dao.UserDAO;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -42,9 +44,14 @@ public class LoginViewController implements MainAppAware{
 		}
 
 		try {
+			UserDAO userDAO = new UserDAO();
+	        User usuarioLogado = userDAO.toDoLogin(nome, senha);
+	        System.out.println("Usuário logado: " + usuarioLogado.getId());
 			
-			openMainView();
-			
+	        if (usuarioLogado != null) {
+	            mainApp.setLoggedUser(usuarioLogado); 
+	            openMainView();
+	        }			
 		} catch (DbException e) {
 			Alerts.showAlert("Erro", null, e.getMessage(), AlertType.ERROR);
 		}

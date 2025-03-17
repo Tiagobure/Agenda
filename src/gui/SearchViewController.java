@@ -48,6 +48,7 @@ public class SearchViewController {
 
 	@FXML
 	public void initialize() {
+		
 	    txtTypeSearch.getItems().addAll("Resumos", "Palavras-Chave");
 	    txtTypeSearch.getSelectionModel().selectFirst();
 

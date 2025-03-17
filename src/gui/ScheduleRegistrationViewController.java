@@ -28,7 +28,6 @@ public class ScheduleRegistrationViewController {
         this.scheduleDAO = new ScheduleDAO();
     }
 
-    // Método para definir a referência da ScheduleViewController
     public void setScheduleViewController(ScheduleViewController scheduleViewController) {
         this.scheduleViewController = scheduleViewController;
     }

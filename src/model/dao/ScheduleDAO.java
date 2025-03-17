@@ -74,7 +74,6 @@ public class ScheduleDAO {
 			pstmt.setString(1, dayWeek);
 			pstmt.setInt(2, userId); 
 			
-			// Filtro por usuario_id
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -90,7 +89,6 @@ public class ScheduleDAO {
 		return schedules;
 	}
 
-	// Método para deletar um cronograma
 	public void delete(int id, int userId) {
 		String sql = "DELETE FROM cronograma WHERE id = ? AND usuario_id = ?";
 

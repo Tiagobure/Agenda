@@ -67,12 +67,19 @@ public class ScheduleViewController implements MainAppAware {
 	}
 
 	public void loadSchedule() {
+		if (mainApp == null) {
+			System.err.println("Erro: mainApp não foi inicializado!");
+			return;
+		}
 
+		if (mainApp.getLoggedUser() == null) {
+			System.err.println("Erro: Usuário logado não foi definido!");
+			return;
+		}
+	    userId = mainApp.getLoggedUser().getId();
 		int userIdexist = obUserId();
 		System.out.println("Carregando cronogramas para o userId: " + userIdexist);
-//		if (userIdexist == null) {
-//			throw new IllegalStateException("UserId não está definido.");
-//		}
+
 		try {
 			List<Schedule> schedulesFromDAO = scheduleDAO.listAll(userId);
 			System.out.println("Cronogramas carregados: " + schedulesFromDAO.size());
@@ -181,6 +188,7 @@ public class ScheduleViewController implements MainAppAware {
 			throw new IllegalArgumentException("UserId não pode ser nulo.");
 		}
 		this.userId = userId;
+		System.out.println("setUserId chamado com: " + userId);
 		loadSchedule();
 	}
 

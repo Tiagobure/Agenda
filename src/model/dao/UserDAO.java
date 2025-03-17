@@ -14,81 +14,82 @@ import model.User;
 
 public class UserDAO {
 
-	// Cadastra um novo usuário com senha criptografada
-	public void userRegister(User register) {
-		// Verifica se o usuário já existe
-		if (userTrue(register.getName())) {
-			throw new DbException("Usuário já cadastrado.");
-		}
+    public void userRegister(User register) {
 
-		String sql = "INSERT INTO usuarios (nome, senha) VALUES (?, ?)";
+    	if (userExists(register.getName())) {
+            throw new DbException("Usuário já cadastrado.");
+        }
 
-		try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, register.getName());
-			pstmt.setString(2, hashPass(register.getPass())); // Armazena a senha criptografada
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			throw new DbException("Erro ao cadastrar usuário: " + e.getMessage());
-		}
-	}
+        String sql = "INSERT INTO usuarios (nome, senha) VALUES (?, ?)";
 
-	// Verifica as credenciais de login
-	public User toDoLogin(String name, String password) {
-		String sql = "SELECT id, nome, senha FROM usuarios WHERE nome = ?";
+        try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, register.getName());
+            pstmt.setString(2, hashPass(register.getPass())); 
+            
+            
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao cadastrar usuário: " + e.getMessage());
+            throw new DbException("Erro ao cadastrar usuário: " + e.getMessage());
+        }
+    }
 
-		try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, name);
-			ResultSet rs = pstmt.executeQuery();
+    public User toDoLogin(String name, String password) {
+        if (password == null || password.trim().isEmpty()) {
+            throw new DbException("Senha não pode ser nula ou vazia.");
+        }
 
-			if (rs.next()) {
-				String senhaHash = rs.getString("senha");
-				if (hashPass(password).equals(senhaHash)) { 
-					
-					// Compara a senha informada com o hash armazenado
-					User usuario = new User(rs.getString("nome"), password);
-					usuario.setId(rs.getInt("id"));
-					return usuario;
-					
-				} else {
-					throw new DbException("Senha incorreta.");
-				}
-			} else {
-				throw new DbException("Usuário não encontrado.");
-			}
-		} catch (SQLException e) {
-			throw new DbException("Erro ao fazer login: " + e.getMessage());
-		}
-	}
+        String sql = "SELECT id, nome, senha FROM usuarios WHERE nome = ?";
 
-	// Verifica se um usuário já existe no banco de dados
-	public boolean userTrue(String name) {
-		String sql = "SELECT id FROM usuarios WHERE nome = ?";
+        try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
 
-		try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, name);
-			ResultSet rs = pstmt.executeQuery();
-			return rs.next(); // Retorna true se o usuário existir
-		} catch (SQLException e) {
-			throw new DbException("Erro ao verificar usuário existente: " + e.getMessage());
-		}
-	}
+            if (rs.next()) {
+                String senhaHash = rs.getString("senha");
+                if (hashPass(password).equals(senhaHash)) {
+            
+                    User usuario = new User(rs.getInt("id"), rs.getString("nome"), password);
+                    return usuario;
+                } else {
+                    throw new DbException("Senha incorreta.");
+                }
+            } else {
+                throw new DbException("Usuário não encontrado.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao fazer login: " + e.getMessage());
+            throw new DbException("Erro ao fazer login: " + e.getMessage());
+        }
+    }
 
-	// Gera um hash SHA-256 para a senha
-	private String hashPass(String password) {
-		try {
-			MessageDigest digest = MessageDigest.getInstance("SHA-256");
-			byte[] hashBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+    public boolean userExists(String name) {
+        String sql = "SELECT id FROM usuarios WHERE nome = ?";
 
-			// Converte bytes para uma string hexadecimal
-			StringBuilder hexString = new StringBuilder();
-			
-			for (byte b : hashBytes) {
-				hexString.append(String.format("%02x", b));
-			}
+        try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next(); 
+        } catch (SQLException e) {
+            System.err.println("Erro ao verificar usuário existente: " + e.getMessage());
+            throw new DbException("Erro ao verificar usuário existente: " + e.getMessage());
+        }
+    }
 
-			return hexString.toString();
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Erro ao gerar hash da senha", e);
-		}
-	}
+    private String hashPass(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            System.err.println("Erro ao criptografar senha: " + e.getMessage());
+            throw new RuntimeException("Erro ao criptografar senha.", e);
+        }
+    }
 }
