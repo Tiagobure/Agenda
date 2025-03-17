@@ -23,7 +23,7 @@ import java.io.IOException;
 import model.Schedule;
 import model.dao.ScheduleDAO;
 
-public class ScheduleViewController implements MainAppAware {
+public final class ScheduleViewController implements MainAppAware {
 
 	private Main mainApp;
 
@@ -58,7 +58,7 @@ public class ScheduleViewController implements MainAppAware {
 				if (empty || item == null) {
 					setText(null);
 				} else {
-					setText(item.toString());
+					setText(item.getDayWeek() +"-"+ item.getHour() + "-" + item.getSubject() +"-"+ item.getTalkAbout());
 					// Usa o método toString() para exibir o item
 				}
 			}
@@ -76,8 +76,8 @@ public class ScheduleViewController implements MainAppAware {
 			System.err.println("Erro: Usuário logado não foi definido!");
 			return;
 		}
-	    userId = mainApp.getLoggedUser().getId();
-		int userIdexist = obUserId();
+		userId = mainApp.getLoggedUser().getId();
+		int userIdexist = getUserId();
 		System.out.println("Carregando cronogramas para o userId: " + userIdexist);
 
 		try {
@@ -94,7 +94,7 @@ public class ScheduleViewController implements MainAppAware {
 	@FXML
 	public void openRegistrationAction() {
 		if (userId == null) {
-			Alerts.showAlert("Erro", null, "UserId não está definido.", AlertType.ERROR);
+			Alerts.showAlert("Erro", null, "UserId não está definido.  Verifique o usuário logado.", AlertType.ERROR);
 			return;
 		}
 		try {
@@ -112,7 +112,7 @@ public class ScheduleViewController implements MainAppAware {
 
 			stage.showAndWait();
 
-			refreshSchedules();
+			loadSchedule();
 		} catch (IOException e) {
 			handleViewError("abrir a tela de novo cronograma", e);
 		}
@@ -120,6 +120,7 @@ public class ScheduleViewController implements MainAppAware {
 
 	@FXML
 	public void editeScheduleAction() {
+		
 		if (validateSelection()) {
 			try {
 				if (mainApp == null) {
@@ -128,7 +129,7 @@ public class ScheduleViewController implements MainAppAware {
 
 				Schedule selected = listSchedule.getSelectionModel().getSelectedItem();
 				scheduleDAO.editSchedule(selected);
-				schedules.get(userId);
+				
 				mainApp.loadView("/gui/RegisterScheduleView.fxml", "Editar Cronograma",
 						Map.of("cronograma", selected, "usuarioId", userId));
 
@@ -156,7 +157,7 @@ public class ScheduleViewController implements MainAppAware {
 	// Validações
 	private boolean validateSelection() {
 		if (listSchedule.getSelectionModel().isEmpty()) {
-			Alerts.showAlert("Atenção", null, "Selecione um cronograma da lista.", AlertType.WARNING);
+			Alerts.showAlert("Atenção", null, "Selecione um cronograma da lista para continuar.", AlertType.WARNING);
 			return false;
 		}
 		return true;
@@ -175,24 +176,22 @@ public class ScheduleViewController implements MainAppAware {
 
 	public void addSchedule(Schedule schedule) {
 
-		schedules.add(schedule);
+		 if (!schedules.contains(schedule)) {
+		        schedules.add(schedule);
+		    }
 	}
 
-	public void refreshSchedules() {
-		loadSchedule();
-
-	}
 
 	public void setUserId(Integer userId) {
 		if (userId == null) {
-			throw new IllegalArgumentException("UserId não pode ser nulo.");
+			throw new IllegalArgumentException("UserId não pode ser nulo. erifique o usuário logado.");
 		}
 		this.userId = userId;
 		System.out.println("setUserId chamado com: " + userId);
 		loadSchedule();
 	}
 
-	private int obUserId() {
+	private int getUserId() {
 		return userId;
 	}
 }

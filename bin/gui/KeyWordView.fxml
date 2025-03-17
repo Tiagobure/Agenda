@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="15" style="-fx-padding: 15; -fx-background-color: #F4F6F9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.KeyWordViewController">
+<VBox alignment="CENTER" prefHeight="471.0" prefWidth="374.0" spacing="15" style="-fx-padding: 15; -fx-background-color: #F4F6F9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.KeyWordViewController">
     
     <!-- Cabeçalho -->
     <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1565C0;" text="PALAVRAS-CHAVE" />
@@ -39,11 +39,11 @@
          <RowConstraints />
       </rowConstraints>
     </GridPane>
-   <TextArea fx:id="txtdescription" prefHeight="200.0" prefWidth="200.0" />
+   <TextArea fx:id="txtdescription" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
     
     <!-- Botão de Ação -->
     <HBox alignment="CENTER" spacing="10">
-        <Button fx:id="btSave" onAction="#saveKeyWordAction" style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5px 10px; -fx-border-radius: 4px; -fx-cursor: hand;" text="Salvar" />
+        <Button fx:id="btSave" onAction="#saveKeyWordAction" prefHeight="44.0" prefWidth="72.0" style="-fx-background-color: #1565C0; -fx-text-fill: white; -fx-font-size: 12px; -fx-padding: 5px 10px; -fx-border-radius: 4px; -fx-cursor: hand;" text="Salvar" />
     </HBox>
               
 </VBox>

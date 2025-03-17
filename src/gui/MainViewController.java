@@ -62,6 +62,14 @@ public class MainViewController implements Initializable, MainAppAware {
 		mainApp.loadView("/gui/SearchView.fxml", "Busca", null);
 	}
 
+	@FXML
+	private void openDeveloperLink(ActionEvent event) {
+	    try {
+	        java.awt.Desktop.getDesktop().browse(new java.net.URI("https://github.com/Tiagobure/Vestibular-f-cil"));
+	    } catch (Exception e) {
+	        Alerts.showAlert("Erro", null, "Não foi possível abrir o link.", AlertType.ERROR);
+	    }
+	}
 	private void loadViewStack(String fxmlPath, Integer userId) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -86,7 +94,8 @@ public class MainViewController implements Initializable, MainAppAware {
 					AlertType.INFORMATION);
 		}
 	}
-
+	
+	
 	@Override
 	public void setMainApp(Main mainApp) {
 		this.mainApp = mainApp;

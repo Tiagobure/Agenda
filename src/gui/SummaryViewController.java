@@ -2,6 +2,7 @@ package gui;
 
 import java.io.File;
 import application.Main;
+import application.MainAppAware;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import javafx.event.ActionEvent;
@@ -16,7 +17,7 @@ import javafx.stage.Stage;
 import model.Summary;
 import model.dao.SummaryDAO;
 
-public class SummaryViewController {
+public final class SummaryViewController implements MainAppAware {
     @FXML
     private TextField txtFieldTitle, txtFieldSubject, txtFieldTalkAbout, txtFieldAttachment;
     @FXML
@@ -25,6 +26,13 @@ public class SummaryViewController {
     private Button btSave, btClear, btFile;
 
     private Main mainApp;
+
+	@SuppressWarnings("exports")
+	@Override
+	public void setMainApp(Main mainApp) {
+		this.mainApp = mainApp;
+		System.out.println("mainApp foi definido: " + (mainApp != null));
+	}
     private SummaryDAO summaryDAO = new SummaryDAO();
     private int userId;
 
@@ -43,6 +51,16 @@ public class SummaryViewController {
 
     @FXML
     public void saveSummaryAction() {
+    	if (mainApp == null) {
+			System.err.println("Erro: mainApp não foi inicializado!");
+			return;
+		}
+
+		if (mainApp.getLoggedUser() == null) {
+			System.err.println("Erro: Usuário logado não foi definido!");
+			return;
+		}
+	    userId = mainApp.getLoggedUser().getId();
         String title = txtFieldTitle.getText();
         String text = txtArea.getText();
         String subject = txtFieldSubject.getText();
@@ -60,8 +78,8 @@ public class SummaryViewController {
 
         System.out.println("Resumo salvo com sucesso!");
         clearLabelsAction();
-        Stage stage = (Stage) btSave.getScene().getWindow();
-		stage.close();    }
+        
+    }
 
     @FXML
     public void clearLabelsAction() {
@@ -84,11 +102,11 @@ public class SummaryViewController {
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
-            System.out.println("Arquivo selecionado: " + selectedFile.getAbsolutePath());
+            String filePath = selectedFile.getAbsolutePath();
+            System.out.println("Arquivo selecionado: " + filePath);
+            txtFieldAttachment.setText(filePath); 
         }
     }
 
-    public void setMainApp(Main mainApp) {
-        this.mainApp = mainApp;
-    }
+  
 }

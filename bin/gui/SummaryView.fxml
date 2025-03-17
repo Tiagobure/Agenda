@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="25" style="-fx-padding: 20; -fx-background-color: #F4F6F9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SummaryViewController">
+<VBox alignment="CENTER" prefHeight="721.0" prefWidth="608.0" spacing="25" style="-fx-padding: 20; -fx-background-color: #F4F6F9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SummaryViewController">
 
     <!-- Header da Seção -->
     <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1565C0;" text="GERENCIAMENTO DE RESUMOS" />
@@ -28,7 +28,7 @@
         
         <!-- Campo Resumo -->
         <Label style="-fx-font-size: 14px; -fx-text-fill: #333; -fx-alignment: TOP_LEFT;" text="Conteúdo:" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-        <TextArea fx:id="txtArea" promptText="Digite seu resumo aqui..." style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 4px; -fx-padding: 8px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextArea fx:id="txtArea" prefHeight="240.0" prefWidth="358.0" promptText="Digite seu resumo aqui..." style="-fx-pref-width: 300px; -fx-font-size: 14px; -fx-background-color: #f7f7f7; -fx-border-color: #ccc; -fx-border-radius: 4px; -fx-padding: 8px;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         
         <!-- Campo Matéria -->
         <Label style="-fx-font-size: 14px; -fx-text-fill: #333;" text="Matéria:" GridPane.columnIndex="0" GridPane.rowIndex="3" />

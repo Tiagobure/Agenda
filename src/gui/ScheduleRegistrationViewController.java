@@ -129,7 +129,7 @@ public class ScheduleRegistrationViewController {
 
             // Notifica a ScheduleViewController para atualizar a lista
             if (scheduleViewController != null) {
-                scheduleViewController.refreshSchedules(); // Recarrega a lista
+                scheduleViewController.loadSchedule(); // Recarrega a lista
             }
 
             closeWindow();

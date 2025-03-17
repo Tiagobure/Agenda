@@ -74,8 +74,8 @@ public class Schedule {
 
 	@Override
 	public String toString() {
-		return "Dia:" + dayWeek + ", Hora:" + hour + ", Matéria:" + subject + ", Assunto:" + talkAbout
-				;
+		return  ("DIA: " + dayWeek + ", HORA: " + hour + ", MATÉRIA: " + subject + ", ASSUNTO: " + talkAbout).toUpperCase(); 
+				
 	}
 
 	

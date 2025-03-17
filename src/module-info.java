@@ -4,6 +4,7 @@ module ProjetoA {
 	requires javafx.fxml;
 	requires javafx.graphics;
 	requires javafx.base;
+	requires java.desktop;
 
 	exports gui to javafx.fxml;
 
