@@ -25,6 +25,14 @@ import model.dao.ScheduleDAO;
 public class ScheduleViewController implements MainAppAware {
 
 	private Main mainApp;
+	
+	@SuppressWarnings("exports")
+	@Override
+	public void setMainApp(Main mainApp) {
+		this.mainApp = mainApp;
+	    System.out.println("mainApp foi definido: " + (mainApp != null));
+	}
+
 	private ScheduleDAO scheduleDAO = new ScheduleDAO();
 	private Integer userId;
 
@@ -49,14 +57,14 @@ public class ScheduleViewController implements MainAppAware {
 				if (empty || item == null) {
 					setText(null);
 				} else {
-					setText(item.toString()); // Usa o método toString() para exibir o item
+					setText(item.toString()); 
+					// Usa o método toString() para exibir o item
 				}
 			}
 		});
 		listSchedule.setItems(schedules);
 	}
 
-	// Carrega os cronogramas do usuário
 	public void loadSchedule() {
 
 		int userIdexist = obUserId();
@@ -75,7 +83,6 @@ public class ScheduleViewController implements MainAppAware {
 		}
 	}
 
-	// Ações dos botões
 	@FXML
 	public void openRegistrationAction() {
 		if (userId == null) {
@@ -88,14 +95,14 @@ public class ScheduleViewController implements MainAppAware {
 
 			// Obtém o controlador da tela de registro
 			ScheduleRegistrationViewController registrationController = loader.getController();
-			registrationController.setSelectedSchedule(null); // Passa a referência
-			registrationController.setUserId(userId); // Passa o ID do usuário
-
+			registrationController.setSelectedSchedule(null); 
+			registrationController.setUserId(userId); 
 			// Abre a nova janela
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
 			stage.setTitle("Novo Cronograma");
 			stage.show();
+			refreshSchedules(); 
 		} catch (IOException e) {
 			handleViewError("abrir a tela de novo cronograma", e);
 		}
@@ -105,9 +112,16 @@ public class ScheduleViewController implements MainAppAware {
 	public void editeScheduleAction() {
 		if (validateSelection()) {
 			try {
-				Schedule selected = listSchedule.getSelectionModel().getSelectedItem();
-				mainApp.loadView("/gui/RegisterScheduleView.fxml", "Editar Cronograma",
+				  if (mainApp == null) {
+		                throw new IllegalStateException("mainApp não foi inicializado!");
+		            }
+
+				Schedule selected = listSchedule.getSelectionModel().getSelectedItem();	
+				scheduleDAO.editSchedule(selected);
+				schedules.get(userId);
+      			mainApp.loadView("/gui/RegisterScheduleView.fxml", "Editar Cronograma",
 						Map.of("cronograma", selected, "usuarioId", userId));
+				
 			} catch (Exception e) {
 				handleViewError("abrir a tela de edição", e);
 			}
@@ -149,13 +163,11 @@ public class ScheduleViewController implements MainAppAware {
 		e.printStackTrace();
 	}
 
-	// Método para adicionar um novo cronograma à lista
 	public void addSchedule(Schedule schedule) {
 
 		schedules.add(schedule);
 	}
 
-	// Método para atualizar a lista de cronogramas
 	public void refreshSchedules() {
 		loadSchedule();
 
@@ -169,12 +181,8 @@ public class ScheduleViewController implements MainAppAware {
 		loadSchedule();
 	}
 
-	public void setMainApp(Main mainApp) {
-		this.mainApp = mainApp;
-	}
-
+	
 	private int obUserId() {
-		// Implemente a lógica para obter o ID do usuário logado
 		return userId;
 	}
 }

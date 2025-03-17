@@ -68,8 +68,12 @@ public class MainViewController implements Initializable, MainAppAware {
 			Node view = loader.load();
 			contentArea.getChildren().setAll(view);
 
+		      if (loader.getController() instanceof MainAppAware) {
+		            ((MainAppAware) loader.getController()).setMainApp(mainApp);
+		        }
+
 			if (loader.getController() instanceof ScheduleViewController) {
-				ScheduleViewController controller = loader.getController();
+				ScheduleViewController controller = (ScheduleViewController) loader.getController();
 				if (userId == null) {
 					throw new IllegalArgumentException("UserId não pode ser nulo.");
 				}
