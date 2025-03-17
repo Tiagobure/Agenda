@@ -16,17 +16,20 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 public class MainViewController implements Initializable, MainAppAware {
 
 	private Main mainApp;
+	
+	@SuppressWarnings("exports")
 	@Override
 	public void setMainApp(Main mainApp) {
 		this.mainApp = mainApp;
 	}
 
 	@FXML
-	private Button btSummary, btKeyWord, btSchedule, btSearch;
+	private Button btSummary, btKeyWord, btSchedule, btSearch, btLogout;
 
 	@FXML
 	private StackPane contentArea;
@@ -81,13 +84,27 @@ public class MainViewController implements Initializable, MainAppAware {
 				if (userId == null) {
 					throw new IllegalArgumentException("UserId não pode ser nulo.");
 				}
-				controller.setUserId(userId); // Passa o userId para o controlador
+				controller.setUserId(userId); 
 			}
 
 		} catch (IOException e) {
 			Alerts.showAlert("Erro ao carregar a tela", null, "Não foi possível carregar a tela: " + fxmlPath,
 					AlertType.INFORMATION);
 		}
+	}
+	
+	@FXML
+	private void logoutAction() {
+	    try {
+	        Stage currentStage = (Stage) contentArea.getScene().getWindow();
+	        currentStage.close();
+
+	        Stage loginStage = new Stage();
+	        mainApp.start(loginStage);
+	    } catch (Exception e) {
+	        Alerts.showAlert("Erro", null, "Não foi possível fazer logout.", AlertType.ERROR);
+	        e.printStackTrace();
+	    }
 	}
 	
 	

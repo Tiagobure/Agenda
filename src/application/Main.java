@@ -77,6 +77,7 @@ public class Main extends Application {
 	public void loadView(String fxml, String titulo, Map<String, Object> params) {
 		try {
 
+			//logica para abertura de demais View
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
 			Parent root = loader.load();
 			Object controller = loader.getController();

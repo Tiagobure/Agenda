@@ -12,13 +12,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+
 import java.io.IOException;
 import model.Schedule;
 import model.dao.ScheduleDAO;
@@ -51,19 +55,35 @@ public final class ScheduleViewController implements MainAppAware {
 
 	@FXML
 	private void configureListView() {
-		listSchedule.setCellFactory(lv -> new ListCell<Schedule>() {
-			@Override
-			protected void updateItem(Schedule item, boolean empty) {
-				super.updateItem(item, empty);
-				if (empty || item == null) {
-					setText(null);
-				} else {
-					setText(item.getDayWeek() +"-"+ item.getHour() + "-" + item.getSubject() +"-"+ item.getTalkAbout());
-					// Usa o método toString() para exibir o item
-				}
-			}
-		});
-		listSchedule.setItems(schedules);
+	    listSchedule.setCellFactory(lv -> new ListCell<Schedule>() {
+	        @Override
+	        protected void updateItem(Schedule item, boolean empty) {
+	            super.updateItem(item, empty);
+	            if (empty || item == null) {
+	                setText(null);
+	                setGraphic(null);
+	            } else {
+	                // Cria um layout personalizado
+	                HBox hbox = new HBox(10); // Espaçamento de 10 entre os elementos
+	                hbox.setAlignment(Pos.CENTER_LEFT);
+
+	                Label dayLabel = new Label("Dia: " + item.getDayWeek());
+	                Label hourLabel = new Label("Hora: " + item.getHour());
+	                Label subjectLabel = new Label("Matéria: " + item.getSubject());
+	                Label topicLabel = new Label("Tópico: " + item.getTalkAbout());
+                     // cores diferentes das label do cronograma
+	                dayLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #1565C0;"); // Azul
+	                hourLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #D32F2F;"); // Vermelho
+	                subjectLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #388E3C;"); // Verde
+	                topicLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #FFA000;"); // laranja
+
+	                hbox.getChildren().addAll(dayLabel, hourLabel, subjectLabel, topicLabel);
+
+	                setGraphic(hbox);
+	            }
+	        }
+	    });
+	    listSchedule.setItems(schedules);
 	}
 
 	public void loadSchedule() {
@@ -77,6 +97,7 @@ public final class ScheduleViewController implements MainAppAware {
 			return;
 		}
 		userId = mainApp.getLoggedUser().getId();
+		
 		int userIdexist = getUserId();
 		System.out.println("Carregando cronogramas para o userId: " + userIdexist);
 
@@ -120,7 +141,7 @@ public final class ScheduleViewController implements MainAppAware {
 
 	@FXML
 	public void editeScheduleAction() {
-		
+
 		if (validateSelection()) {
 			try {
 				if (mainApp == null) {
@@ -129,7 +150,7 @@ public final class ScheduleViewController implements MainAppAware {
 
 				Schedule selected = listSchedule.getSelectionModel().getSelectedItem();
 				scheduleDAO.editSchedule(selected);
-				
+
 				mainApp.loadView("/gui/RegisterScheduleView.fxml", "Editar Cronograma",
 						Map.of("cronograma", selected, "usuarioId", userId));
 
@@ -176,11 +197,10 @@ public final class ScheduleViewController implements MainAppAware {
 
 	public void addSchedule(Schedule schedule) {
 
-		 if (!schedules.contains(schedule)) {
-		        schedules.add(schedule);
-		    }
+		if (!schedules.contains(schedule)) {
+			schedules.add(schedule);
+		}
 	}
-
 
 	public void setUserId(Integer userId) {
 		if (userId == null) {

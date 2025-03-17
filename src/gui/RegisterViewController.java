@@ -8,11 +8,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.User;
 import model.dao.UserDAO;
-import application.Main;
 import gui.util.*;
 public class RegisterViewController {
 
-	private Main mainApp;
 
 	@FXML
 	private TextField txtName;

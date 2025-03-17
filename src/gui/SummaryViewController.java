@@ -42,7 +42,7 @@ public final class SummaryViewController implements MainAppAware {
 
     @FXML
     public void initialize() {
-        Constraints.setTextAreaMaxLength(txtArea, 5000);
+        Constraints.setTextAreaMaxLength(txtArea, 6000);
         Constraints.setTextFieldMaxLength(txtFieldTitle, 70);
         Constraints.setTextFieldMaxLength(txtFieldSubject, 60);
         Constraints.setTextFieldMaxLength(txtFieldTalkAbout, 100);
