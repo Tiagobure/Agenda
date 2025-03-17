@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
 import db.DataBase;
 import gui.ScheduleRegistrationViewController;
 import gui.LoginViewController;
@@ -22,6 +25,8 @@ import javafx.scene.layout.VBox;
 
 public class Main extends Application {
 
+	
+    private static ScheduledExecutorService executor;
 	private static Scene mainScene;
 	private static Main instance;
 
@@ -76,7 +81,14 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-
+	 @Override
+	    public void stop() {
+	        System.out.println("Encerrando o programa...");
+	        if (executor != null) {
+	            executor.shutdown(); 
+	            System.out.println("Executor encerrado: " + executor.isShutdown());
+	        }
+	    }
 	public void loadView(String fxml, String titulo, Map<String, Object> params) {
 		try {
 
@@ -125,6 +137,13 @@ public class Main extends Application {
 	public static Scene getMainScene() {
 		return mainScene;
 	}
+	
+	public static ScheduledExecutorService getExecutor() {
+        if (executor == null) {
+            executor = Executors.newSingleThreadScheduledExecutor();
+        }
+        return executor;
+    }
 
 	public static void main(String[] args) {
 		DataBase.init();
