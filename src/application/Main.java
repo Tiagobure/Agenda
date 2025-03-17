@@ -7,7 +7,6 @@ import gui.ScheduleRegistrationViewController;
 import gui.LoginViewController;
 import gui.util.Alerts;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -16,8 +15,6 @@ import model.User;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class Main extends Application {

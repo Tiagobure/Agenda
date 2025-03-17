@@ -92,33 +92,33 @@ public class SummaryDAO {
     }
     
     
-    public List<Summary> listLastSummary(int userId, int limite) {
-        List<Summary> summarys = new ArrayList<>();
-        String sql = "SELECT * FROM resumos WHERE usuario_id = ? ORDER BY id DESC LIMIT ?";
-
-        try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, userId);
-            pstmt.setInt(2, limite);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Summary r = new Summary(
-                    rs.getString("titulo"),
-                    rs.getString("texto"),
-                    rs.getString("materia"),
-                    rs.getString("assunto"),
-                    rs.getInt("usuario_id")
-                );
-                r.setId(rs.getInt("id"));
-                r.setAttachment(rs.getString("anexo"));
-                summarys.add(r);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return summarys;
-    }
+//    public List<Summary> listLastSummary(int userId, int limite) {
+//        List<Summary> summarys = new ArrayList<>();
+//        String sql = "SELECT * FROM resumos WHERE usuario_id = ? ORDER BY id DESC LIMIT ?";
+//
+//        try (Connection conn = DataBase.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//            pstmt.setInt(1, userId);
+//            pstmt.setInt(2, limite);
+//            ResultSet rs = pstmt.executeQuery();
+//
+//            while (rs.next()) {
+//                Summary r = new Summary(
+//                    rs.getString("titulo"),
+//                    rs.getString("texto"),
+//                    rs.getString("materia"),
+//                    rs.getString("assunto"),
+//                    rs.getInt("usuario_id")
+//                );
+//                r.setId(rs.getInt("id"));
+//                r.setAttachment(rs.getString("anexo"));
+//                summarys.add(r);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return summarys;
+//    }
     
     public List<Summary> findAllByUserId(int userId) {
         String sql = "SELECT * FROM resumos WHERE usuario_id = ?";

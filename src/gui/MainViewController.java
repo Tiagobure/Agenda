@@ -2,9 +2,7 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ResourceBundle;
 
 import application.Main;
@@ -14,21 +12,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 public class MainViewController implements Initializable, MainAppAware {
 
 	private Main mainApp;
+	@Override
+	public void setMainApp(Main mainApp) {
+		this.mainApp = mainApp;
+	}
 
 	@FXML
 	private Button btSummary, btKeyWord, btSchedule, btSearch;
@@ -65,7 +60,7 @@ public class MainViewController implements Initializable, MainAppAware {
 	@FXML
 	private void openDeveloperLink(ActionEvent event) {
 	    try {
-	        java.awt.Desktop.getDesktop().browse(new java.net.URI("https://github.com/Tiagobure/Vestibular-f-cil"));
+	        java.awt.Desktop.getDesktop().browse(new java.net.URI("https://github.com/Tiagobure"));
 	    } catch (Exception e) {
 	        Alerts.showAlert("Erro", null, "Não foi possível abrir o link.", AlertType.ERROR);
 	    }
@@ -96,8 +91,5 @@ public class MainViewController implements Initializable, MainAppAware {
 	}
 	
 	
-	@Override
-	public void setMainApp(Main mainApp) {
-		this.mainApp = mainApp;
-	}
+
 }

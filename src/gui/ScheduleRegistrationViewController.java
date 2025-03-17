@@ -1,6 +1,5 @@
 package gui;
 
-import application.Main;
 import gui.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
@@ -12,12 +11,12 @@ import model.dao.ScheduleDAO;
 
 public class ScheduleRegistrationViewController {
 
-    private Main mainApp;
+   
     private Schedule selectedSchedule;
     private final ScheduleDAO scheduleDAO;
     private int userId;
 
-    private ScheduleViewController scheduleViewController; // Referência à ScheduleViewController
+    private ScheduleViewController scheduleViewController; 
 
     @FXML
     private TextField txtDayWeek, txtHour, txtSubject, txtTalkAbout;
@@ -36,9 +35,6 @@ public class ScheduleRegistrationViewController {
         this.userId = userId;
     }
 
-    public void setMainApp(Main mainApp) {
-        this.mainApp = mainApp;
-    }
 
     public void setSelectedSchedule(Schedule schedule) {
         this.selectedSchedule = schedule;
@@ -109,7 +105,6 @@ public class ScheduleRegistrationViewController {
             if (scheduleViewController != null) {
                 scheduleViewController.addSchedule(newSchedule); // Adiciona o novo cronograma à lista
             }
-
             clearFields();
             closeWindow();
         } catch (Exception e) {
@@ -129,7 +124,7 @@ public class ScheduleRegistrationViewController {
 
             // Notifica a ScheduleViewController para atualizar a lista
             if (scheduleViewController != null) {
-                scheduleViewController.loadSchedule(); // Recarrega a lista
+                scheduleViewController.loadSchedule(); 
             }
 
             closeWindow();

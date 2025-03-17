@@ -43,7 +43,7 @@ public final class  KeyWordViewController implements MainAppAware  {
 	public void initialize() {
 		
 		Constraints.setTextAreaMaxLength(txtdescription, 1000);
-		Constraints.setTextFieldMaxLength(txtKeyWord, 70);
+		Constraints.setTextFieldMaxLength(txtKeyWord, 60);
 		Constraints.setTextFieldMaxLength(txtSubject, 50);
 		Constraints.setTextFieldMaxLength(txtTalkAbout, 50);
 	}

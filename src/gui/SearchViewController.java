@@ -1,12 +1,16 @@
 package gui;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Stack;
 
 import application.Main;
 import application.MainAppAware;
+import gui.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -14,10 +18,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.KeyWord;
 import model.Summary;
@@ -141,7 +143,6 @@ public class SearchViewController implements MainAppAware {
 		});
 	}
 
-	// Método para deletar um item da lista e do banco de dados
 	private void deleteItem(Object item) {
 		if (item instanceof Summary) {
 			summaryDAO.delete((Summary) item);
@@ -254,46 +255,97 @@ public class SearchViewController implements MainAppAware {
 
 	private void showPopupSummary(Summary summary) {
 		Stage popupStage = new Stage();
-		popupStage.setTitle("Resumo Completo");
+		popupStage.setTitle("Detalhes do Resumo");
 
-		VBox vbox = new VBox(10);
-		vbox.setStyle("-fx-padding: 20; -fx-background-color: #1a237e;"); // Azul escuro
+		// Layout principal
+		VBox vbox = new VBox(15); // Espaçamento entre os elementos
+		vbox.setStyle("-fx-padding: 25; -fx-background-color: #f5f5f5;"); // Fundo claro
 
+		// Título do resumo
 		Label lblTitle = new Label("Título: " + summary.getTitle());
-		lblTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-size: 16px;"); // Texto branco
+		lblTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 18px;"); // Texto escuro e
+																									// maior
 
+		// Matéria
 		Label lblSubject = new Label("Matéria: " + summary.getSubject());
-		lblSubject.setStyle("-fx-text-fill: #e0e0e0; -fx-font-size: 14px;"); // Texto cinza claro
+		lblSubject.setStyle("-fx-text-fill: #555555; -fx-font-size: 14px;"); // Texto cinza escuro
 
+		// Assunto
 		Label lblTalkAbout = new Label("Assunto: " + summary.getTalkAbout());
-		lblTalkAbout.setStyle("-fx-text-fill: #e0e0e0; -fx-font-size: 14px;"); // Texto cinza claro
+		lblTalkAbout.setStyle("-fx-text-fill: #555555; -fx-font-size: 14px;"); // Texto cinza escuro
 
+		// Texto do resumo
 		Label lblText = new Label(summary.getText());
-		lblText.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 14px;"); // Texto branco
-		lblText.setWrapText(true);
+		lblText.setStyle("-fx-text-fill: #333333; -fx-font-size: 14px;"); // Texto escuro
+		lblText.setWrapText(true); // Quebra de linha
 
+		// Botão para abrir o anexo (se existir)
+		Button btnOpenAttachment = new Button("Abrir Anexo");
+		btnOpenAttachment.setStyle("-fx-background-color: #2196f3; -fx-text-fill: white; -fx-font-size: 14px; "
+				+ "-fx-padding: 8px 16px; -fx-border-radius: 4px; "
+				+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"); // Botão azul
+
+		// Efeito de hover para o botão "Abrir Anexo"
+		btnOpenAttachment.setOnMouseEntered(e -> btnOpenAttachment
+				.setStyle("-fx-background-color: #42a5f5; -fx-text-fill: white; -fx-font-size: 14px; "
+						+ "-fx-padding: 8px 16px; -fx-border-radius: 4px; "
+						+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);"));
+		btnOpenAttachment.setOnMouseExited(e -> btnOpenAttachment
+				.setStyle("-fx-background-color: #2196f3; -fx-text-fill: white; -fx-font-size: 14px; "
+						+ "-fx-padding: 8px 16px; -fx-border-radius: 4px; "
+						+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"));
+
+		// Verifica se há um anexo e adiciona o botão "Abrir Anexo"
+		if (summary.getAttachment() != null && !summary.getAttachment().isEmpty()) {
+			btnOpenAttachment.setOnAction(event -> {
+				File file = new File(summary.getAttachment());
+				if (file.exists()) {
+					try {
+						java.awt.Desktop.getDesktop().open(file);
+					} catch (IOException e) {
+						Alerts.showAlert("Erro", null, "Não foi possível abrir o arquivo: " + e.getMessage(),
+								AlertType.ERROR);
+					}
+				} else {
+					Alerts.showAlert("Erro", null, "Arquivo não encontrado!", AlertType.ERROR);
+				}
+			});
+		} else {
+			btnOpenAttachment.setDisable(true); // Desabilita o botão se não houver anexo
+			btnOpenAttachment.setStyle("-fx-background-color: #9e9e9e; -fx-text-fill: white; -fx-font-size: 14px; "
+					+ "-fx-padding: 8px 16px; -fx-border-radius: 4px; "
+					+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"); // Botão cinza
+		}
+
+		// Botão "Fechar"
 		Button btnClose = new Button("Fechar");
-		btnClose.setStyle("-fx-background-color: #ff6f00; -fx-text-fill: white; -fx-font-size: 14px; "
-				+ "-fx-padding: 5px 10px; -fx-border-radius: 5px; "
-				+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"); // Botão laranja
+		btnClose.setStyle("-fx-background-color: #ff5252; -fx-text-fill: white; -fx-font-size: 14px; "
+				+ "-fx-padding: 8px 16px; -fx-border-radius: 4px; "
+				+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"); // Botão vermelho
 
 		// Efeito de hover para o botão "Fechar"
 		btnClose.setOnMouseEntered(
-				e -> btnClose.setStyle("-fx-background-color: #ff8f00; -fx-text-fill: white; -fx-font-size: 14px; "
-						+ "-fx-padding: 5px 10px; -fx-border-radius: 5px; "
+				e -> btnClose.setStyle("-fx-background-color: #ff6e6e; -fx-text-fill: white; -fx-font-size: 14px; "
+						+ "-fx-padding: 8px 16px; -fx-border-radius: 4px; "
 						+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);"));
 		btnClose.setOnMouseExited(
-				e -> btnClose.setStyle("-fx-background-color: #ff6f00; -fx-text-fill: white; -fx-font-size: 14px; "
-						+ "-fx-padding: 5px 10px; -fx-border-radius: 5px; "
+				e -> btnClose.setStyle("-fx-background-color: #ff5252; -fx-text-fill: white; -fx-font-size: 14px; "
+						+ "-fx-padding: 8px 16px; -fx-border-radius: 4px; "
 						+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"));
 
 		btnClose.setOnAction(event -> popupStage.close());
 
-		vbox.getChildren().addAll(lblTitle, lblSubject, lblTalkAbout, lblText, btnClose);
+		// Layout dos botões
+		HBox buttonBox = new HBox(10, btnOpenAttachment, btnClose);
+		buttonBox.setStyle("-fx-alignment: center-right; -fx-padding: 10 0 0 0;"); // Alinhamento à direita
+
+		// Adiciona os componentes ao VBox
+		vbox.getChildren().addAll(lblTitle, lblSubject, lblTalkAbout, lblText, buttonBox);
 
 		// Adicionando ScrollPane
 		ScrollPane scrollPane = new ScrollPane(vbox);
 		scrollPane.setFitToWidth(true); // Ajusta a largura do conteúdo ao ScrollPane
+		scrollPane.setStyle("-fx-background-color: transparent; -fx-padding: 0;"); // Remove bordas desnecessárias
 
 		Scene scene = new Scene(scrollPane, 600, 400); // Tamanho maior para a janela
 		popupStage.setScene(scene);
@@ -305,57 +357,68 @@ public class SearchViewController implements MainAppAware {
 	}
 
 	private void showPopupKeyWord(KeyWord key) {
-		Stage popupStage = new Stage();
-		popupStage.setTitle("Detalhes da Palavra-Chave");
+	    Stage popupStage = new Stage();
+	    popupStage.setTitle("Detalhes da Palavra-Chave");
 
-		VBox vbox = new VBox(10);
-		vbox.setStyle("-fx-padding: 20; -fx-background-color: #1a237e;"); // Azul escuro
+	    // Layout principal
+	    VBox vbox = new VBox(15); // Espaçamento entre os elementos
+	    vbox.setStyle("-fx-padding: 25; -fx-background-color: #f5f5f5;"); // Fundo claro
 
-		Label lblKeyWord = new Label("Palavra-Chave: " + key.getKeyword());
-		lblKeyWord.setStyle("-fx-font-weight: bold; -fx-text-fill: #ffffff; -fx-font-size: 16px;"); // Texto branco
+	    // Palavra-chave
+	    Label lblKeyWord = new Label("Palavra-Chave: " + key.getKeyword());
+	    lblKeyWord.setStyle("-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 18px;"); // Texto escuro e maior
 
-		Label lblSubject = new Label("Matéria: " + key.getSubject());
-		lblSubject.setStyle("-fx-text-fill: #e0e0e0; -fx-font-size: 14px;"); // Texto cinza claro
+	    // Matéria
+	    Label lblSubject = new Label("Matéria: " + key.getSubject());
+	    lblSubject.setStyle("-fx-text-fill: #555555; -fx-font-size: 14px;"); // Texto cinza escuro
 
-		Label lblTalkAbout = new Label("Assunto: " + key.getTalkAbout());
-		lblTalkAbout.setStyle("-fx-text-fill: #e0e0e0; -fx-font-size: 14px;"); // Texto cinza claro
+	    // Assunto
+	    Label lblTalkAbout = new Label("Assunto: " + key.getTalkAbout());
+	    lblTalkAbout.setStyle("-fx-text-fill: #555555; -fx-font-size: 14px;"); // Texto cinza escuro
 
-		Label lblDescription = new Label(key.getDescription());
-		lblDescription.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 14px;"); // Texto branco
-		lblDescription.setWrapText(true);
+	    // Descrição
+	    Label lblDescription = new Label(key.getDescription());
+	    lblDescription.setStyle("-fx-text-fill: #333333; -fx-font-size: 14px;"); // Texto escuro
+	    lblDescription.setWrapText(true); // Quebra de linha
 
-		Button btnClose = new Button("Fechar");
-		btnClose.setStyle("-fx-background-color: #ff6f00; -fx-text-fill: white; -fx-font-size: 14px; "
-				+ "-fx-padding: 5px 10px; -fx-border-radius: 5px; "
-				+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"); // Botão laranja
+	    // Botão "Fechar"
+	    Button btnClose = new Button("Fechar");
+	    btnClose.setStyle("-fx-background-color: #ff5252; -fx-text-fill: white; -fx-font-size: 14px; "
+	            + "-fx-padding: 8px 16px; -fx-border-radius: 4px; "
+	            + "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"); // Botão vermelho
 
-		// Efeito de hover para o botão "Fechar"
-		btnClose.setOnMouseEntered(
-				e -> btnClose.setStyle("-fx-background-color: #ff8f00; -fx-text-fill: white; -fx-font-size: 14px; "
-						+ "-fx-padding: 5px 10px; -fx-border-radius: 5px; "
-						+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);"));
-		btnClose.setOnMouseExited(
-				e -> btnClose.setStyle("-fx-background-color: #ff6f00; -fx-text-fill: white; -fx-font-size: 14px; "
-						+ "-fx-padding: 5px 10px; -fx-border-radius: 5px; "
-						+ "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"));
+	    // Efeito de hover para o botão "Fechar"
+	    btnClose.setOnMouseEntered(
+	            e -> btnClose.setStyle("-fx-background-color: #ff6e6e; -fx-text-fill: white; -fx-font-size: 14px; "
+	                    + "-fx-padding: 8px 16px; -fx-border-radius: 4px; "
+	                    + "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);"));
+	    btnClose.setOnMouseExited(
+	            e -> btnClose.setStyle("-fx-background-color: #ff5252; -fx-text-fill: white; -fx-font-size: 14px; "
+	                    + "-fx-padding: 8px 16px; -fx-border-radius: 4px; "
+	                    + "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 1);"));
 
-		btnClose.setOnAction(event -> popupStage.close());
+	    btnClose.setOnAction(event -> popupStage.close());
 
-		vbox.getChildren().addAll(lblKeyWord, lblSubject, lblTalkAbout, lblDescription, btnClose);
+	    // Layout dos botões
+	    HBox buttonBox = new HBox(10, btnClose);
+	    buttonBox.setStyle("-fx-alignment: center-right; -fx-padding: 10 0 0 0;"); // Alinhamento à direita
 
-		// Adicionando ScrollPane
-		ScrollPane scrollPane = new ScrollPane(vbox);
-		scrollPane.setFitToWidth(true); // Ajusta a largura do conteúdo ao ScrollPane
+	    // Adiciona os componentes ao VBox
+	    vbox.getChildren().addAll(lblKeyWord, lblSubject, lblTalkAbout, lblDescription, buttonBox);
 
-		Scene scene = new Scene(scrollPane, 600, 400); // Tamanho maior para a janela
-		popupStage.setScene(scene);
+	    // Adicionando ScrollPane
+	    ScrollPane scrollPane = new ScrollPane(vbox);
+	    scrollPane.setFitToWidth(true); // Ajusta a largura do conteúdo ao ScrollPane
+	    scrollPane.setStyle("-fx-background-color: transparent; -fx-padding: 0;"); // Remove bordas desnecessárias
 
-		// Impedir que a janela seja maximizada
-		popupStage.setResizable(false);
+	    Scene scene = new Scene(scrollPane, 600, 400); // Tamanho maior para a janela
+	    popupStage.setScene(scene);
 
-		popupStage.show();
+	    // Impedir que a janela seja maximizada
+	    popupStage.setResizable(false);
+
+	    popupStage.show();
 	}
-
 	@FXML
 	public void listAll() {
 		if (mainApp == null) {
