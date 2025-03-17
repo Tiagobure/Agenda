@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,12 +26,12 @@ import model.dao.ScheduleDAO;
 public class ScheduleViewController implements MainAppAware {
 
 	private Main mainApp;
-	
+
 	@SuppressWarnings("exports")
 	@Override
 	public void setMainApp(Main mainApp) {
 		this.mainApp = mainApp;
-	    System.out.println("mainApp foi definido: " + (mainApp != null));
+		System.out.println("mainApp foi definido: " + (mainApp != null));
 	}
 
 	private ScheduleDAO scheduleDAO = new ScheduleDAO();
@@ -57,7 +58,7 @@ public class ScheduleViewController implements MainAppAware {
 				if (empty || item == null) {
 					setText(null);
 				} else {
-					setText(item.toString()); 
+					setText(item.toString());
 					// Usa o método toString() para exibir o item
 				}
 			}
@@ -93,16 +94,18 @@ public class ScheduleViewController implements MainAppAware {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/RegisterScheduleView.fxml"));
 			Parent root = loader.load();
 
-			// Obtém o controlador da tela de registro
 			ScheduleRegistrationViewController registrationController = loader.getController();
-			registrationController.setSelectedSchedule(null); 
-			registrationController.setUserId(userId); 
-			// Abre a nova janela
+			registrationController.setSelectedSchedule(null);
+			registrationController.setUserId(userId);
 			Stage stage = new Stage();
-			stage.setScene(new Scene(root));
 			stage.setTitle("Novo Cronograma");
-			stage.show();
-			refreshSchedules(); 
+			stage.setScene(new Scene(root));
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.initOwner(btNewSchedule.getScene().getWindow());
+
+			stage.showAndWait();
+
+			refreshSchedules();
 		} catch (IOException e) {
 			handleViewError("abrir a tela de novo cronograma", e);
 		}
@@ -112,16 +115,16 @@ public class ScheduleViewController implements MainAppAware {
 	public void editeScheduleAction() {
 		if (validateSelection()) {
 			try {
-				  if (mainApp == null) {
-		                throw new IllegalStateException("mainApp não foi inicializado!");
-		            }
+				if (mainApp == null) {
+					throw new IllegalStateException("mainApp não foi inicializado!");
+				}
 
-				Schedule selected = listSchedule.getSelectionModel().getSelectedItem();	
+				Schedule selected = listSchedule.getSelectionModel().getSelectedItem();
 				scheduleDAO.editSchedule(selected);
 				schedules.get(userId);
-      			mainApp.loadView("/gui/RegisterScheduleView.fxml", "Editar Cronograma",
+				mainApp.loadView("/gui/RegisterScheduleView.fxml", "Editar Cronograma",
 						Map.of("cronograma", selected, "usuarioId", userId));
-				
+
 			} catch (Exception e) {
 				handleViewError("abrir a tela de edição", e);
 			}
@@ -181,7 +184,6 @@ public class ScheduleViewController implements MainAppAware {
 		loadSchedule();
 	}
 
-	
 	private int obUserId() {
 		return userId;
 	}

@@ -7,13 +7,16 @@ import gui.ScheduleRegistrationViewController;
 import gui.LoginViewController;
 import gui.util.Alerts;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Schedule;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class Main extends Application {
@@ -31,12 +34,6 @@ public class Main extends Application {
 		this.userId = userId;
 	}
 
-//	public Integer getUserId() {
-//		if (userId == null) {
-//			throw new IllegalStateException("UserId não está definido.");
-//		}
-//		return userId;
-//	}
 
 	public void setUserId(Integer userId) {
 		if (userId == null) {
@@ -56,7 +53,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			// Carrega a tela de login
+			// tela de login
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/LoginView.fxml"));
 			VBox root = loader.load();
 			LoginViewController controller = loader.getController();
@@ -73,14 +70,6 @@ public class Main extends Application {
 		}
 	}
 
-	public void closeScene(Button bt) {
-		if (bt != null && bt.getScene() != null) {
-			Stage stage = (Stage) bt.getScene().getWindow();
-			if (stage != null) {
-				stage.close();
-			}
-		}
-	}
 
 	public void loadView(String fxml, String titulo, Map<String, Object> params) {
 		try {
@@ -103,16 +92,16 @@ public class Main extends Application {
 
 				if (params.containsKey("usuarioId")) {
 					scheduleController.setUserId((int) params.get("usuarioId"));
-					}
 				}
-			
-
-			// Configuração da nova janela
+			}
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
+
 			stage.setTitle(titulo);
 			stage.sizeToScene();
-			stage.show();
+			stage.initModality(Modality.APPLICATION_MODAL); 
+			stage.initOwner(mainScene.getWindow());
+			stage.showAndWait();
 		} catch (IOException e) {
 			Alerts.showAlert("Erro", "Erro ao carregar a tela", "Não foi possível carregar a tela: " + fxml,
 					AlertType.ERROR);

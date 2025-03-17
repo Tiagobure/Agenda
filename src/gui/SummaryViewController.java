@@ -60,8 +60,8 @@ public class SummaryViewController {
 
         System.out.println("Resumo salvo com sucesso!");
         clearLabelsAction();
-        mainApp.closeScene(btSave);
-    }
+        Stage stage = (Stage) btSave.getScene().getWindow();
+		stage.close();    }
 
     @FXML
     public void clearLabelsAction() {

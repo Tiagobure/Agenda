@@ -12,7 +12,6 @@ import model.Schedule;
 
 public class ScheduleDAO {
 
-	// Método para inserir um cronograma na base de dados
 	public void insert(Schedule schedule) {
 		String sql = "INSERT INTO cronograma (diaSemana, horario, materia, assunto, usuario_id) VALUES (?, ?, ?, ?, ?)";
 
@@ -21,14 +20,13 @@ public class ScheduleDAO {
 			pstmt.setString(2, schedule.getHour());
 			pstmt.setString(3, schedule.getSubject());
 			pstmt.setString(4, schedule.getTalkAbout());
-			pstmt.setInt(5, schedule.getUserId()); // Definindo o usuario_id
+			pstmt.setInt(5, schedule.getUserId()); 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	// Método para listar todos os cronogramas de um usuário
 	public List<Schedule> listAll(int userId) {
 		List<Schedule> schedule = new ArrayList<>();
 		String sql = "SELECT * FROM cronograma WHERE usuario_id = ?";
@@ -61,14 +59,13 @@ public class ScheduleDAO {
 	        pstmt.setString(3, schedule.getSubject());
 	        pstmt.setString(4, schedule.getTalkAbout());
 	        pstmt.setInt(5, schedule.getId());
-	        pstmt.setInt(6, schedule.getUserId()); // Garantir que apenas o usuário correto possa editar
+	        pstmt.setInt(6, schedule.getUserId()); 
 	        pstmt.executeUpdate();
 	    } catch (SQLException e) {
 	        System.err.println("Erro ao editar cronograma: " + e.getMessage());
 	        e.printStackTrace();
 	    }
 	}
-	// Método para listar os schedules de um determinado dia da semana
 	public List<Schedule> listByDay(String dayWeek, int userId) {
 		List<Schedule> schedules = new ArrayList<>();
 		String sql = "SELECT * FROM cronograma WHERE diaSemana = ? AND usuario_id = ?";

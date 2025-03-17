@@ -7,6 +7,7 @@ import application.MainAppAware;
 import gui.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -35,27 +36,26 @@ public class LoginViewController implements MainAppAware{
 		String nome = txtname.getText().trim();
 		String senha = passwordField.getText().trim();
 
-		// Validação dos campos
 		if (nome.isEmpty() || senha.isEmpty()) {
 			Alerts.showAlert("Erro", null, "Preencha todos os campos!", AlertType.ERROR);
 			return;
 		}
 
 		try {
-			//Usuario usuario = userDAO.fazerLogin(nome, senha);
+			
 			openMainView();
-			// Fecha a tela de login
-			mainApp.closeScene(btLogin);
 			
 		} catch (DbException e) {
-			// Exibe mensagem de erro em caso de falha no login
 			Alerts.showAlert("Erro", null, e.getMessage(), AlertType.ERROR);
 		}
 	}
 
 	private void openMainView() {
 		try {
+			Stage stage = (Stage) btLogin.getScene().getWindow();
+			stage.close();
 			mainApp.loadView("/gui/MainView.fxml", "Agenda", null);
+			
 		} catch (Exception e) {
 			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela principal!", AlertType.ERROR);
 			e.printStackTrace();
@@ -65,6 +65,7 @@ public class LoginViewController implements MainAppAware{
 	@FXML
 	private void RegistrationUser() {
 		try {
+			
 			mainApp.loadView("/gui/RegisterView.fxml", "Cadastro", null);
 		} catch (Exception e) {
 			Alerts.showAlert("Erro", null, "Não foi possível abrir a tela de cadastro!", AlertType.ERROR);

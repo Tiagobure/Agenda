@@ -29,7 +29,6 @@ public class RegisterViewController {
 		String name = txtName.getText().trim();
 		String password = passField.getText().trim();
 
-		// Validação básica
 		if (name.isEmpty() || password.isEmpty()) {
 			Alerts.showAlert("Error", null, "Preencha todos os campos!", AlertType.ERROR);
 			return;
@@ -45,6 +44,7 @@ public class RegisterViewController {
 		try {
 			userDAO.userRegister(usuario);
 			Alerts.showAlert("Sucesso", null,"Usuário cadastrado com sucesso!", AlertType.INFORMATION);
+			
 			clearLabel();
 			Stage stage = (Stage) btRegister.getScene().getWindow();
 			stage.close();
