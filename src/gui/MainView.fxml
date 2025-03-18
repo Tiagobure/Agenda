@@ -10,89 +10,65 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="718.0" prefWidth="926.0"
-	style="-fx-background-color: #F0F0F0;"
-	xmlns="http://javafx.com/javafx/23.0.1"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="gui.MainViewController">
+<BorderPane prefHeight="718.0" prefWidth="926.0" style="-fx-background-color: #EAEAEA;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
 
-	<!-- Top Section -->
-	<top>
-		<HBox alignment="CENTER_LEFT" spacing="15"
-			style="-fx-background-color: #6CB4EE; -fx-padding: 20 30; -fx-border-width: 0 0 3 0; -fx-border-color: #FFB6C1;"> <!-- Azul Suave com borda Rosa Pastel -->
-			<ImageView fitHeight="30" fitWidth="30">
-				<Image url="@../gui/javaLogo.png" />
-			</ImageView>
-			<Label
-				style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"
-				text="AGENDA DO ESTUDANTE" />
-			<HBox spacing="10" style="-fx-margin-left: auto;">
-				<Button fx:id="btSearch" onAction="#openSearchAction"
-					style="-fx-background-color: transparent; -fx-font-size: 18px; -fx-text-fill: white; -fx-cursor: hand;"
-					text="🔍">
-					<tooltip>
-						<Tooltip text="Pesquisar" />
-					</tooltip>
-				</Button>
-				<Button fx:id="btLogout" onAction="#logoutAction"
-					style="-fx-background-color: transparent; -fx-font-size: 18px; -fx-text-fill: white; -fx-cursor: hand;"
-					text="🚪">
-					<tooltip>
-						<Tooltip text="Sair" />
-					</tooltip>
-				</Button>
-			</HBox>
-		</HBox>
-	</top>
+    <!-- Top Section -->
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="926.0" spacing="15" style="-fx-background-color: linear-gradient(to right, #5A9BD3, #2B6CA3); -fx-padding: 15px 30px; -fx-border-width: 0 0 3 0; -fx-border-color: #FFB6C1;" stylesheets="@util/styles.css">
+            <ImageView fitHeight="30" fitWidth="36.0">
+                <Image url="@../gui/javaLogo.png" />
+            </ImageView>
+            <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;" text="AGENDA DO ESTUDANTE" />
+            <HBox spacing="10" style="-fx-margin-left: auto;">
+                <!-- Botões do Header -->
+                <Button fx:id="btSearch" onAction="#openSearchAction" prefHeight="39.0" prefWidth="93.0" styleClass="header-button" text="🔍">
+                    <tooltip>
+                        <Tooltip text="Pesquisar" />
+                    </tooltip>
+                </Button>
+                <Button fx:id="btLogout" onAction="#logoutAction" prefHeight="39.0" prefWidth="94.0" styleClass="header-button" text="🚪">
+                    <tooltip>
+                        <Tooltip text="Sair" />
+                    </tooltip>
+                </Button>
+                <Button fx:id="btDeleteUser" onAction="#deleteUserAction" prefHeight="39.0" prefWidth="89.0" styleClass="header-button" text="🗑">
+                    <tooltip>
+                        <Tooltip text="Excluir Conta" />
+                    </tooltip>
+                </Button>
+            </HBox>
+        </HBox>
+    </top>
 
-	<!-- Left Navigation -->
-	<left>
-		<VBox alignment="CENTER_LEFT" spacing="15"
-			style="-fx-background-color: #FFB6C1; -fx-padding: 25; -fx-background-radius: 0 15 15 0;"> <!-- Rosa Pastel -->
-			<Button fx:id="btSummary" onAction="#openSumaryAction"
-				style="-fx-background-color: #6CB4EE; -fx-text-fill: white; -fx-font-size: 15px; -fx-pref-width: 180px; -fx-padding: 12px; -fx-border-radius: 10px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);"> <!-- Azul Suave -->
-				<text>📄 Resumos</text>
-			</Button>
-			<Button fx:id="btKeyWord" onAction="#openKeyWordAction"
-				style="-fx-background-color: #6CB4EE; -fx-text-fill: white; -fx-font-size: 15px; -fx-pref-width: 180px; -fx-padding: 12px; -fx-border-radius: 10px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);"> <!-- Azul Suave -->
-				<text>🔑 Palavras-Chave</text>
-			</Button>
-			<Button fx:id="btSchedule" onAction="#openScheduleAction"
-				style="-fx-background-color: #6CB4EE; -fx-text-fill: white; -fx-font-size: 15px; -fx-pref-width: 180px; -fx-padding: 12px; -fx-border-radius: 10px; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);"> <!-- Azul Suave -->
-				<text>📅 Cronograma</text>
-			</Button>
-		</VBox>
-	</left>
+    <!-- Left Navigation -->
+    <left>
+        <VBox alignment="CENTER_LEFT" spacing="12" style="-fx-background-color: #F8C8DC; -fx-padding: 15; -fx-background-radius: 0 15 15 0;" stylesheets="@util/styles.css">
+            <Button fx:id="btSummary" onAction="#openSumaryAction" styleClass="nav-button" text="📄 Resumos" />
+            <Button fx:id="btKeyWord" onAction="#openKeyWordAction" styleClass="nav-button" text="🔑 Palavras-Chave" />
+            <Button fx:id="btSchedule" onAction="#openScheduleAction" styleClass="nav-button" text="📅 Cronograma" />
+        </VBox>
+    </left>
 
-	<!-- Área de Conteúdo Dinâmico -->
-	<center>
-		<StackPane fx:id="contentArea"
-			style="-fx-padding: 30; -fx-border-color: transparent;">
-			<VBox alignment="CENTER" spacing="20">
-				<Label
-					style="-fx-font-size: 24px; -fx-text-fill: #333; -fx-font-weight: bold;"
-					text="Bem-vindo à Agenda do Estudante!" />
-				<Label style="-fx-font-size: 16px; -fx-text-fill: #555;"
-					text="Selecione uma opção no menu para começar." />
-				<ImageView fitHeight="250" fitWidth="250">
-					<Image url="@../gui/JavaImagem.png" />
-				</ImageView>
-			</VBox>
-		</StackPane>
-	</center>
+    <!-- Área de Conteúdo -->
+    <center>
+        <StackPane fx:id="contentArea" prefHeight="524.0" prefWidth="552.0" style="-fx-padding: 30;">
+            <VBox alignment="CENTER" spacing="20" style="-fx-background-color: white; -fx-padding: 30px; -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);">
+                <Label style="-fx-font-size: 24px; -fx-text-fill: #333; -fx-font-weight: bold;" text="Bem-vindo à Agenda do Estudante!" />
+                <Label style="-fx-font-size: 16px; -fx-text-fill: #555;" stylesheets="@util/styles.css" text="Selecione uma opção no menu para começar." />
+                <ImageView fitHeight="150" fitWidth="150.0">
+                    <Image url="@../gui/JavaImagem.png" />
+                </ImageView>
+            </VBox>
+        </StackPane>
+    </center>
 
-	<!-- Footer -->
-	<bottom>
-		<HBox alignment="CENTER" prefHeight="20.0" prefWidth="926.0"
-			style="-fx-background-color: #6CB4EE; -fx-padding: 12;"> <!-- Azul Suave -->
-			<Label style="-fx-font-size: 13px; -fx-text-fill: white;"
-				text="Desenvolvido por " />
-			<Hyperlink onAction="#openDeveloperLink"
-				style="-fx-font-size: 13px; -fx-text-fill: white; -fx-underline: false;"
-				text="Tiago Palma" />
-		</HBox>
-	</bottom>
+    <!-- Footer -->
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="40.0" prefWidth="926.0" style="-fx-background-color: #EAEAEA; -fx-padding: 10;">
+            <Label style="-fx-font-size: 13px; -fx-text-fill: #666;" text="Desenvolvido por " />
+            <Hyperlink onAction="#openDeveloperLink" style="-fx-font-size: 13px; -fx-text-fill: #2B6CA3; -fx-underline: true;" text="Tiago Palma" />
+        </HBox>
+    </bottom>
 
 </BorderPane>
