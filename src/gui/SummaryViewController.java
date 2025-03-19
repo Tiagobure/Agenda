@@ -76,7 +76,7 @@ public final class SummaryViewController implements MainAppAware {
         summary.setAttachment(attachment);
         summaryDAO.inserir(summary, userId);
 
-        System.out.println("Resumo salvo com sucesso!");
+		Alerts.showAlert("Aviso", null, "Resumo salvo com sucesso!", AlertType.INFORMATION);
         clearLabelsAction();
         
     }

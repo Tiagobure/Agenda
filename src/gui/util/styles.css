@@ -23,3 +23,46 @@
         -fx-background-color: linear-gradient(to right, #4A8BC1, #24649D);
     }
 
+/* Estilo geral do DialogPane */
+.dialog-pane {
+    -fx-background-color: #2196F3; /* Azul vibrante */
+    -fx-border-color: #1976D2; /* Azul mais escuro para a borda */
+    -fx-border-width: 2.0px;
+    -fx-border-radius: 5.0px;
+    -fx-background-radius: 5.0px;
+}
+
+/* Estilo do cabeçalho */
+.dialog-pane .header-panel {
+    -fx-background-color: #1976D2; /* Azul mais escuro para o cabeçalho */
+    -fx-text-fill: #FFFFFF; /* Texto branco para contraste */
+}
+
+.dialog-pane .header-panel .label {
+    -fx-font-size: 16.0px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF; /* Texto branco para contraste */
+}
+
+/* Estilo do conteúdo */
+.dialog-pane .content.label {
+    -fx-font-size: 14.0px;
+    -fx-text-fill: #FFFFFF; /* Texto branco para contraste */
+}
+
+/* Estilo dos botões */
+.dialog-pane .button {
+    -fx-background-color: #FF9800; /* Laranja vibrante para os botões */
+    -fx-text-fill: #FFFFFF; /* Texto branco para contraste */
+    -fx-border-radius: 3.0px;
+    -fx-background-radius: 3.0px;
+    -fx-padding: 5.0px 10.0px;
+}
+
+.dialog-pane .button:hover {
+    -fx-background-color: #F57C00; /* Laranja mais escuro ao passar o mouse */
+}
+
+.dialog-pane .button:pressed {
+    -fx-background-color: #E65100; /* Laranja mais intenso ao clicar */
+}
